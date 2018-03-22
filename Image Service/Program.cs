@@ -5,7 +5,7 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Image_Service
+namespace ImageService
 {
     static class Program
     {
@@ -17,7 +17,7 @@ namespace Image_Service
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
-                new Service1()
+                new ImageService()
             };
             ServiceBase.Run(ServicesToRun);
         }

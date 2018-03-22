@@ -1,12 +1,11 @@
-﻿namespace Image_Service
+﻿namespace ImageService
 {
-    partial class Service1
+    partial class ImageService
     {
         /// <summary> 
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
-
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
@@ -28,10 +27,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            this.ServiceName = "Service1";
+            this.eventLogger = new System.Diagnostics.EventLog();
+            ((System.ComponentModel.ISupportInitialize)(this.eventLogger)).BeginInit();
+            // 
+            // ImageService
+            // 
+            this.ServiceName = "ImageService";
+            ((System.ComponentModel.ISupportInitialize)(this.eventLogger)).EndInit();
+
         }
 
         #endregion
+
+        private System.Diagnostics.EventLog eventLogger;
     }
 }
