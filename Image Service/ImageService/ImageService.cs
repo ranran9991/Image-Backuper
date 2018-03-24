@@ -8,6 +8,7 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using ImageService.Logging.Modal;
 
 public enum ServiceState
 {
@@ -69,6 +70,21 @@ namespace ImageService
         {
             eventLogger.WriteEntry(DateTime.Now.ToString() + " Service Stopped");
 
+        }
+        public void OnMessageRecieved(object sender, MessageRecievedEventArgs e)
+        {
+            switch (e.Status)
+            {
+                case MessageTypeEnum.INFO:
+                    eventLogger.WriteEntry(e.Message, EventLogEntryType.Information);
+                    break;
+                case MessageTypeEnum.FAIL:
+                    eventLogger.WriteEntry(e.Message, EventLogEntryType.FailureAudit);
+                    break;
+                case MessageTypeEnum.WARNING:
+                    eventLogger.WriteEntry(e.Message, EventLogEntryType.Warning);
+                    break;
+            }
         }
         [DllImport("advapi32.dll", SetLastError = true)]
         private static extern bool SetServiceStatus(IntPtr handle, ref ServiceStatus serviceStatus);
