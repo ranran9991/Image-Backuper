@@ -30,7 +30,7 @@ namespace ImageService.Controller
             string res = t.Result;
             // this is an akward solution to the problem that i cant bass resultSuccesful
             // to an ansynchronious method.
-            if (res.Equals(""))
+            if (res == null)
             {
                 resultSuccesful = true;
             }

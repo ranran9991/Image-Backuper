@@ -42,7 +42,7 @@ namespace ImageService
     public partial class ImageService : ServiceBase
     {
         private ImageServer m_imageServer;          // The Image Server
-        private IImageServiceModal modal;
+        private IImageServiceModal imageModal;
         private IImageController controller;
         private ILoggingModal logging;
 
@@ -79,10 +79,12 @@ namespace ImageService
             eventLogger.Log = logName;
 
             eventLogger.WriteEntry(DateTime.Now.ToString() + " Service Started");
-
-            modal = new ImageServiceModal(outputDir, thumbnailSize);
-
-            m_imageServer = new ImageServer(paths, modal);
+            logging = new LoggingModal();
+            logging.MessageRecieved += OnMessageRecieved;
+           
+            imageModal = new ImageServiceModal(outputDir, thumbnailSize);
+            controller = new ImageController(imageModal);
+            m_imageServer = new ImageServer(paths, imageModal, logging, controller);
         }
 
         protected override void OnStop()

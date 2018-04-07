@@ -15,13 +15,14 @@ namespace ImageService.Server
 {
     public class ImageServer
     {
-        private IImageController controller;
-        private ILoggingModal logger;
+        private IImageController m_controller;
+        private ILoggingModal m_logger;
         public event EventHandler<CommandRecievedEventArgs> CommandRecieved;
 
-        public ImageServer(string[] paths, IImageServiceModal imageModal)
+        public ImageServer(string[] paths, IImageServiceModal imageModal, ILoggingModal log, IImageController controller)
         {
-            controller = new ImageController(imageModal);
+            m_logger = log;
+            m_controller = controller;
             foreach (string path in paths)
             {
                 CreateHandler(path);
@@ -30,8 +31,9 @@ namespace ImageService.Server
 
         private void CreateHandler(string directory)
         {
-            IDirectoryHandler handler = new DirectoyHandler(controller);
+            IDirectoryHandler handler = new DirectoyHandler(m_controller, m_logger);
             handler.StartHandleDirectory(directory);
+            m_logger.Log(DateTime.Now.ToString() + " deployed handler in directory " + directory, MessageTypeEnum.INFO);
             CommandRecieved += handler.OnCommandRecieved;
         }
 

@@ -42,7 +42,23 @@ namespace ImageService.Modal
                 result = false;
                 return "ImageError";
             }
-            //create year dir
+            //handeling thumbnail
+           
+            Image image = Image.FromFile(imPath);
+            Image thumb = image.GetThumbnailImage(m_thumbnailSize, m_thumbnailSize,
+                                                 () => true, IntPtr.Zero);
+            string thumbnailDir = Path.Combine(m_OutputFolder, "thumbnails");
+            if (!Directory.Exists(thumbnailDir))
+            {
+                CreateDir(thumbnailDir, out result);
+                if (!result)
+                {
+                    return "FileCreationError";
+                }
+            }
+            thumb.Save(Path.Combine(thumbnailDir, Path.GetFileName(imPath)));
+            image.Dispose();
+            //handeling backup
             DateTime createTime = File.GetCreationTime(imPath);
             string yearPath = Path.Combine(m_OutputFolder, (createTime.Year).ToString());
             if (!Directory.Exists(yearPath))
@@ -72,20 +88,7 @@ namespace ImageService.Modal
             {
                 return "FileMoveError";
             }
-            //creating the thumbnail
-            Image image = Image.FromFile(imPath);
-            Image thumb = image.GetThumbnailImage(m_thumbnailSize, m_thumbnailSize,
-                                                 () => true, IntPtr.Zero);
-            string thumbnailDir = Path.Combine(m_OutputFolder, "thumbnails");
-            if (!Directory.Exists(thumbnailDir))
-            {
-                CreateDir(thumbnailDir, out result);
-                if (!result)
-                {
-                    return "FileCreationError";
-                }
-            }
-            thumb.Save(Path.Combine(thumbnailDir, Path.GetFileName(imPath)));
+           
             return null;
         }
 
@@ -96,7 +99,7 @@ namespace ImageService.Modal
                 Directory.CreateDirectory(path);
                 result = true;
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 result = false;
             }
@@ -106,10 +109,10 @@ namespace ImageService.Modal
         {
             try
             {
-                File.Copy(inputPath, outputPath);
+                File.Move(inputPath, outputPath);
                 result = true;
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 result = false;
             }

@@ -24,21 +24,31 @@ namespace ImageService.Controller.Handlers
 
         public event EventHandler<DirectoryCloseEventArgs> DirectoryClose;              // The Event That Notifies that the Directory is being closed
 
-		public DirectoyHandler(IImageController controller)
+		public DirectoyHandler(IImageController controller, ILoggingModal log)
         {
             m_controller = controller;
+            m_logging = log;
+
         }
 
         public void StartHandleDirectory(string dirPath)
         {
             m_path = dirPath;
+            m_logging.Log(DateTime.Now.ToString() + " started handeling directory at path" + m_path, MessageTypeEnum.INFO);
             string[] filters = { "*.jpg", "*.png", "*.gif", "*.bmp" };
             foreach (string filter in filters)
             {
-                FileSystemWatcher watcher = new FileSystemWatcher(m_path, filter);
-                watcher.Created += new FileSystemEventHandler(OnCreated);
-                watchers.Add(watcher);
-                watcher.EnableRaisingEvents = true;
+                try
+                {
+                    FileSystemWatcher watcher = new FileSystemWatcher(m_path, filter);
+                    watcher.Created += new FileSystemEventHandler(OnCreated);
+                    watchers.Add(watcher);
+                    watcher.EnableRaisingEvents = true;
+                }
+                catch ( Exception e)
+                {
+                    m_logging.Log(e.ToString(), MessageTypeEnum.FAIL);
+                }
             }
         }
 
@@ -64,6 +74,7 @@ namespace ImageService.Controller.Handlers
 
         private void OnCreated(object sender, FileSystemEventArgs e)
         {
+            m_logging.Log(DateTime.Now.ToString() + " Image Created", MessageTypeEnum.INFO);
             string[] args = { e.FullPath };
             bool result;
             m_controller.ExecuteCommand((int)CommandEnum.NewFileCommand, args, out result);
