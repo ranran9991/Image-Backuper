@@ -19,8 +19,7 @@ namespace ImageService.Commands
 
         public string Execute(string[] args, out bool result)
         {
-            string status = m_modal.AddFile(args[0], out result);
-            
+            return  m_modal.AddFile(args[0], out result);
         }
     }
 }

@@ -25,7 +25,21 @@ namespace ImageService.Controller
         }
         public string ExecuteCommand(int commandID, string[] args, out bool resultSuccesful)
         {
-            return commands[commandID].Execute(args, out resultSuccesful);
+            ICommand command = commands[commandID];
+            Task<string> t = Task<string>.Run(() => command.Execute(args, out bool temp));
+            string res = t.Result;
+            // this is an akward solution to the problem that i cant bass resultSuccesful
+            // to an ansynchronious method.
+            if (res.Equals(""))
+            {
+                resultSuccesful = true;
+            }
+            else
+            { 
+                resultSuccesful = false;
+
+            }
+            return res;
         }
     }
 }

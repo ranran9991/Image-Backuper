@@ -54,7 +54,11 @@ namespace ImageService.Controller.Handlers
             {
                 m_logging.Log(DateTime.Now.ToString() + " Command Accepted To Directory " + e.RequestDirPath, MessageTypeEnum.INFO);
                 bool result;
-                m_controller.ExecuteCommand(e.CommandID, e.Args, out result);
+                string res = m_controller.ExecuteCommand(e.CommandID, e.Args, out result);
+                if(result == false)
+                {
+                    m_logging.Log(DateTime.Now.ToString() + res, MessageTypeEnum.FAIL);
+                }
             }
         }
 
