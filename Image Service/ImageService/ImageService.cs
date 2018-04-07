@@ -8,7 +8,11 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using System.Configuration;
 using ImageService.Logging.Modal;
+using ImageService.Server;
+using ImageService.Modal;
+using ImageService.Controller;
 
 public enum ServiceState
 {
@@ -37,6 +41,10 @@ namespace ImageService
 {
     public partial class ImageService : ServiceBase
     {
+        private ImageServer m_imageServer;          // The Image Server
+        private IImageServiceModal modal;
+        private IImageController controller;
+        private ILoggingModal logging;
 
         public ImageService()
         {
@@ -47,14 +55,6 @@ namespace ImageService
             SetServiceStatus(this.ServiceHandle, ref serviceStatus);
             // Initialize the service
             InitializeComponent();
-            eventLogger = new System.Diagnostics.EventLog();
-            if (!System.Diagnostics.EventLog.SourceExists("ImageServiceSource"))
-            {
-                System.Diagnostics.EventLog.CreateEventSource(
-                    "ImageServiceSource", "ImageServiceLog");
-            }
-            eventLogger.Source = "ImageServiceSource";
-            eventLogger.Log = "ImageServiceLog";
 
             // Update the service state to Running.  
             serviceStatus.dwCurrentState = ServiceState.SERVICE_RUNNING;
@@ -63,7 +63,26 @@ namespace ImageService
 
         protected override void OnStart(string[] args)
         {
+            string[] paths = ConfigurationManager.AppSettings["Handler"].Split(';'); 
+            string outputDir = ConfigurationManager.AppSettings["OutputDir"];
+            string sourceName = ConfigurationManager.AppSettings["SourceName"];
+            string logName = ConfigurationManager.AppSettings["LogName"];
+            int thumbnailSize = int.Parse(ConfigurationManager.AppSettings["ThumbnailSize"]);
+
+            eventLogger = new System.Diagnostics.EventLog();
+            if (!System.Diagnostics.EventLog.SourceExists(sourceName))
+            {
+                System.Diagnostics.EventLog.CreateEventSource(
+                    sourceName, logName);
+            }
+            eventLogger.Source = sourceName;
+            eventLogger.Log = logName;
+
             eventLogger.WriteEntry(DateTime.Now.ToString() + " Service Started");
+
+            modal = new ImageServiceModal(outputDir, thumbnailSize);
+
+            m_imageServer = new ImageServer(paths, modal);
         }
 
         protected override void OnStop()
@@ -88,5 +107,10 @@ namespace ImageService
         }
         [DllImport("advapi32.dll", SetLastError = true)]
         private static extern bool SetServiceStatus(IntPtr handle, ref ServiceStatus serviceStatus);
+
+        private void eventLogger_EntryWritten(object sender, EntryWrittenEventArgs e)
+        {
+
+        }
     }
 }

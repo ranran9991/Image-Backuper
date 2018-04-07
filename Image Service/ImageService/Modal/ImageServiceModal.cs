@@ -17,6 +17,12 @@ namespace ImageService.Modal
         private string m_OutputFolder;            // The Output Folder
         private int m_thumbnailSize;              // The Size Of The Thumbnail Size
 
+        public ImageServiceModal(string outPutDir, int thumbnailSize)
+        {
+            m_OutputFolder = outPutDir;
+            m_thumbnailSize = thumbnailSize;
+        }
+
         #endregion
         string IImageServiceModal.AddFile(string imPath, out bool result)
         {
@@ -41,7 +47,8 @@ namespace ImageService.Modal
             string yearPath = Path.Combine(m_OutputFolder, (createTime.Year).ToString());
             if (!Directory.Exists(yearPath))
             {
-                CreateDir(yearPath, out bool createSuccessful);
+                bool createSuccessful;
+                CreateDir(yearPath, out createSuccessful);
                 if (!createSuccessful)
                 {
                     result = false;
