@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -56,10 +57,29 @@ namespace ImageService.Modal
                     return "FileCreationError";
                 }
             }
-            thumb.Save(Path.Combine(thumbnailDir, Path.GetFileName(imPath)));
+            // saves thumbnail to the path
+            // loop is used to handle cases in which an image with
+            // the same name already exists
+            while (true)
+            {
+                string tempPath = imPath;
+                string addedStr = "";
+                int i = 0;
+                try
+                {
+                    tempPath = imPath + addedStr;
+                    thumb.Save(Path.Combine(thumbnailDir, Path.GetFileName(tempPath)));
+                    break;
+                }
+                catch (Exception)
+                {
+                    addedStr = i.ToString();
+                    i++;
+                }
+            }
             image.Dispose();
             //handeling backup
-            DateTime createTime = File.GetCreationTime(imPath);
+            DateTime createTime = getDateTaken(imPath);
             string yearPath = Path.Combine(m_OutputFolder, (createTime.Year).ToString());
             if (!Directory.Exists(yearPath))
             {
@@ -82,11 +102,21 @@ namespace ImageService.Modal
                 }
             }
             string outPath = Path.Combine(monthPath, Path.GetFileName(imPath));
-            //move file to correct dir
-            MoveFile(imPath, outPath, out result);
-            if (!result)
-            {
-                return "FileMoveError";
+            // move file to correct dir, loop used to handle
+            // cases where image with same name already exists in the directory
+            while(true){
+                string addedStr = "";
+                string tempPath = outPath;
+                int i = 0;
+                MoveFile(imPath, tempPath, out result);
+                if (!result)
+                {
+                    addedStr = i.ToString();
+                    tempPath = outPath + addedStr;
+                    i++;
+                    continue;
+                }
+                break;
             }
            
             return null;
@@ -116,6 +146,26 @@ namespace ImageService.Modal
             {
                 result = false;
             }
+        }
+
+        public static DateTime getDateTaken(string path)
+        {
+            try
+            {
+                Regex r = new Regex(":");
+                using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
+                using (Image myImage = Image.FromStream(fs, false, false))
+                {
+                    PropertyItem propItem = myImage.GetPropertyItem(36867);
+                    string dateTaken = r.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
+                    return DateTime.Parse(dateTaken);
+                }
+            }
+            catch (Exception)
+            {
+                return File.GetCreationTime(path);
+            }
+
         }
 
     }
