@@ -45,6 +45,7 @@ namespace ImageService.Server
         public void CloseServer()
         {
             CommandRecievedEventArgs command = new CommandRecievedEventArgs((int)CommandEnum.CloseCommand, new string[] { }, "");
+            CommandRecieved?.Invoke(this, command);
         }
     }
 }

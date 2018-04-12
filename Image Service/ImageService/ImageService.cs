@@ -90,6 +90,7 @@ namespace ImageService
         protected override void OnStop()
         {
             eventLogger.WriteEntry(DateTime.Now.ToString() + " Service Stopped");
+            m_imageServer.CloseServer();
 
         }
         public void OnMessageRecieved(object sender, MessageRecievedEventArgs e)

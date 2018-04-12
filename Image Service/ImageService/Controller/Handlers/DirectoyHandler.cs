@@ -74,7 +74,7 @@ namespace ImageService.Controller.Handlers
 
         private void OnCreated(object sender, FileSystemEventArgs e)
         {
-            m_logging.Log(DateTime.Now.ToString() + " Image Created", MessageTypeEnum.INFO);
+            m_logging.Log(DateTime.Now.ToString() + " Image Created ", MessageTypeEnum.INFO);
             string[] args = { e.FullPath };
             bool result;
             m_controller.ExecuteCommand((int)CommandEnum.NewFileCommand, args, out result);
