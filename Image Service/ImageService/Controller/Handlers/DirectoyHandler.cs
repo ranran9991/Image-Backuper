@@ -96,7 +96,15 @@ namespace ImageService.Controller.Handlers
             m_logging.Log(DateTime.Now.ToString() + " Image Created ", MessageTypeEnum.INFO);
             string[] args = { e.FullPath };
             bool result;
-            m_controller.ExecuteCommand((int)CommandEnum.NewFileCommand, args, out result);
+            string res;
+            res = m_controller.ExecuteCommand((int)CommandEnum.NewFileCommand, args, out result);
+            // if command was unsuccessful
+            if (!result)
+            {
+                m_logging.Log(DateTime.Now.ToString() + " " + res, MessageTypeEnum.FAIL);
+                DirectoryClose?.Invoke(this, new DirectoryCloseEventArgs(m_path, res));
+                CloseHandler();
+            }
         }
         /// <summary>
         /// This function is invoked when filewatcher has an error

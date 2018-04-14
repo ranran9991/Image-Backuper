@@ -29,21 +29,21 @@ namespace ImageService.Modal
         /// This function gets a path to a file
         /// copies it to the correct place in the output folder
         /// creates a thumbnail and puts it in the correct folder as well
-        /// </summary>
+        /// </summary> 
         /// <param name="imPath"></param>
         /// <param name="result"></param>
         /// <returns></returns>
         string IImageServiceModal.AddFile(string imPath, out bool result)
         {
             // lets the thread sleep so the image can fully download to the directory
-            Thread.Sleep(50);
+            Thread.Sleep(200);
             
             if (!Directory.Exists(m_OutputFolder))
             {
-                CreateDir(imPath, out result);
+                string error = CreateDir(m_OutputFolder, out result);
                 if (!result)
                 {
-                    return "FileCreationError";
+                    return "FileCreationError1";
                 }
             }
             if (!File.Exists(imPath))
@@ -62,30 +62,31 @@ namespace ImageService.Modal
                 CreateDir(thumbnailDir, out result);
                 if (!result)
                 {
-                    return "FileCreationError";
+                    return "FileCreationError2";
                 }
             }
             // saves thumbnail to the path
             // loop is used to handle cases in which an image with
             // the same name already exists
+            string tempPath = imPath;
+            string addedStr = "";
+            int i = 1;
             while (true)
             {
-                string tempPath = imPath;
-                string addedStr = "";
-                int i = 0;
-                try
+                if(!File.Exists(Path.Combine(thumbnailDir, Path.GetFileName(tempPath))))
                 {
-                    tempPath = imPath + addedStr;
                     thumb.Save(Path.Combine(thumbnailDir, Path.GetFileName(tempPath)));
                     break;
                 }
-                catch (Exception)
+                else
                 {
                     addedStr = i.ToString();
+                    tempPath = AddSuffix(tempPath, i.ToString());
                     i++;
                 }
             }
             image.Dispose();
+            thumb.Dispose();
             //handeling backup
             DateTime createTime = getDateTaken(imPath);
             string yearPath = Path.Combine(m_OutputFolder, (createTime.Year).ToString());
@@ -96,7 +97,7 @@ namespace ImageService.Modal
                 if (!createSuccessful)
                 {
                     result = false;
-                    return "FileCreationError";
+                    return "FileCreationError3";
                 }
             }
             //create month dir
@@ -106,40 +107,43 @@ namespace ImageService.Modal
                 CreateDir(monthPath, out result);
                 if (!result)
                 {
-                    return "FileCreationError";
+                    return "FileCreationError4";
                 }
             }
             string outPath = Path.Combine(monthPath, Path.GetFileName(imPath));
             // move file to correct dir, loop used to handle
             // cases where image with same name already exists in the directory
-            while(true){
-                string addedStr = "";
-                string tempPath = outPath;
-                int i = 0;
-                MoveFile(imPath, tempPath, out result);
-                if (!result)
+            addedStr = "";
+            tempPath = outPath;
+            i = 1;
+            while (true){
+                if (!File.Exists(tempPath))
                 {
-                    addedStr = i.ToString();
-                    tempPath = outPath + addedStr;
-                    i++;
-                    continue;
+                    MoveFile(imPath, tempPath, out result);
+                    break;
                 }
-                break;
+                else { 
+                    addedStr = i.ToString();
+                    tempPath = AddSuffix(tempPath, i.ToString());
+                    i++;
+                }
             }
            
             return null;
         }
 
-        void CreateDir(string path, out bool result)
+        string CreateDir(string path, out bool result)
         {
             try
             {
                 Directory.CreateDirectory(path);
                 result = true;
+                return null;
             }
-            catch(Exception)
-            {
+            catch(Exception e)
+            { 
                 result = false;
+                return e.ToString();
             }
         }
 
@@ -175,6 +179,14 @@ namespace ImageService.Modal
             }
 
         }
+        string AddSuffix(string filename, string suffix)
+        {
+            string fDir = Path.GetDirectoryName(filename);
+            string fName = Path.GetFileNameWithoutExtension(filename);
+            string fExt = Path.GetExtension(filename);
+            return Path.Combine(fDir, String.Concat(fName, suffix, fExt));
+        }
 
     }
+
 }
