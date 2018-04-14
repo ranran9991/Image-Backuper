@@ -70,14 +70,19 @@ namespace ImageService
             string logName = ConfigurationManager.AppSettings["LogName"];
             int thumbnailSize = int.Parse(ConfigurationManager.AppSettings["ThumbnailSize"]);
 
-            List<string> pathsList = paths.ToList<string>();
+            eventLogger.WriteEntry(DateTime.Now.ToString() + " Service Started");
+
+            List<string> pathsList = new List<string>();
 
             foreach (string path in paths)
             {
-                if (!Directory.Exists(path))
+                if (Directory.Exists(path))
                 {
-                    eventLogger.WriteEntry(DateTime.Now.ToString() + " " + path + ": Unvalid Path To Directory");
-                    pathsList.Remove(path);
+                    pathsList.Add(path);
+                }
+                else
+                {
+                    eventLogger.WriteEntry(DateTime.Now.ToString() + " " + path + ": Invalid Path To Directory");
                 }
             }
 
@@ -92,13 +97,19 @@ namespace ImageService
             eventLogger.Source = sourceName;
             eventLogger.Log = logName;
 
-            eventLogger.WriteEntry(DateTime.Now.ToString() + " Service Started");
-            logging = new LoggingModal();
-            logging.MessageRecieved += OnMessageRecieved;
-           
-            imageModal = new ImageServiceModal(outputDir, thumbnailSize);
-            controller = new ImageController(imageModal);
-            m_imageServer = new ImageServer(paths, imageModal, logging, controller);
+            if (paths.Length == 0)
+            {
+                eventLogger.WriteEntry(DateTime.Now.ToString() + "No Valid Paths To Directories");
+            }
+            else
+            {
+                logging = new LoggingModal();
+                logging.MessageRecieved += OnMessageRecieved;
+
+                imageModal = new ImageServiceModal(outputDir, thumbnailSize);
+                controller = new ImageController(imageModal);
+                m_imageServer = new ImageServer(paths, imageModal, logging, controller);
+            }
         }
 
         protected override void OnStop()
