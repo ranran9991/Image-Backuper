@@ -13,6 +13,7 @@ using ImageService.Logging.Modal;
 using ImageService.Server;
 using ImageService.Modal;
 using ImageService.Controller;
+using System.IO;
 
 public enum ServiceState
 {
@@ -68,6 +69,19 @@ namespace ImageService
             string sourceName = ConfigurationManager.AppSettings["SourceName"];
             string logName = ConfigurationManager.AppSettings["LogName"];
             int thumbnailSize = int.Parse(ConfigurationManager.AppSettings["ThumbnailSize"]);
+
+            List<string> pathsList = paths.ToList<string>();
+
+            foreach (string path in paths)
+            {
+                if (!Directory.Exists(path))
+                {
+                    eventLogger.WriteEntry(DateTime.Now.ToString() + " " + path + ": Unvalid Path To Directory");
+                    pathsList.Remove(path);
+                }
+            }
+
+            paths = pathsList.ToArray<string>();
 
             eventLogger = new System.Diagnostics.EventLog();
             if (!System.Diagnostics.EventLog.SourceExists(sourceName))

@@ -23,6 +23,13 @@ namespace ImageService.Controller
             commands.Add((int)CommandEnum.NewFileCommand, new NewFileCommand(m_modal));
             commands.Add((int)CommandEnum.CloseCommand, new CloseCommand());
         }
+        /// <summary>
+        /// Exectures a command using the Command map
+        /// </summary>
+        /// <param name="commandID"></param>
+        /// <param name="args"></param>
+        /// <param name="resultSuccesful"></param>
+        /// <returns></returns>
         public string ExecuteCommand(int commandID, string[] args, out bool resultSuccesful)
         {
             ICommand command = commands[commandID];

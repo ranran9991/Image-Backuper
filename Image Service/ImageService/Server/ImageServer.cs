@@ -7,6 +7,7 @@ using ImageService.Logging.Modal;
 using ImageService.Modal;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +34,7 @@ namespace ImageService.Server
         {
             IDirectoryHandler handler = new DirectoyHandler(m_controller, m_logger);
             handler.StartHandleDirectory(directory);
+            handler.DirectoryClose += DirectoryError;
             m_logger.Log(DateTime.Now.ToString() + " deployed handler in directory " + directory, MessageTypeEnum.INFO);
             CommandRecieved += handler.OnCommandRecieved;
         }
@@ -46,6 +48,12 @@ namespace ImageService.Server
         {
             CommandRecievedEventArgs command = new CommandRecievedEventArgs((int)CommandEnum.CloseCommand, new string[] { }, "");
             CommandRecieved?.Invoke(this, command);
+        }
+
+        private void DirectoryError(object sender, DirectoryCloseEventArgs e)
+        {
+            IDirectoryHandler handler = (IDirectoryHandler) sender;
+            CommandRecieved -= handler.OnCommandRecieved;
         }
     }
 }

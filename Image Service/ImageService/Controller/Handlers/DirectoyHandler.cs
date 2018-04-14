@@ -30,7 +30,11 @@ namespace ImageService.Controller.Handlers
             m_logging = log;
 
         }
-
+        /// <summary>
+        /// this is called as an initialization when starting to handle
+        /// a directory
+        /// </summary>
+        /// <param name="dirPath"></param>
         public void StartHandleDirectory(string dirPath)
         {
             m_path = dirPath;
@@ -42,16 +46,21 @@ namespace ImageService.Controller.Handlers
                 {
                     FileSystemWatcher watcher = new FileSystemWatcher(m_path, filter);
                     watcher.Created += new FileSystemEventHandler(OnCreated);
+                    watcher.Error += new ErrorEventHandler(OnFileWatcherError);
                     watchers.Add(watcher);
                     watcher.EnableRaisingEvents = true;
                 }
-                catch ( Exception e)
+                catch (Exception e)
                 {
                     m_logging.Log(e.ToString(), MessageTypeEnum.FAIL);
                 }
             }
         }
-
+        /// <summary>
+        /// Passes a command to the controller or closes the handler
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void OnCommandRecieved(object sender, CommandRecievedEventArgs e)
         {
             if (e.CommandID == (int)CommandEnum.CloseCommand)
@@ -68,10 +77,20 @@ namespace ImageService.Controller.Handlers
                 if(result == false)
                 {
                     m_logging.Log(DateTime.Now.ToString() + res, MessageTypeEnum.FAIL);
+                    // handeling controller error
+                    DirectoryClose?.Invoke(this, new DirectoryCloseEventArgs(m_path, res));
+                    CloseHandler();
+
                 }
             }
         }
-
+        /// <summary>
+        /// This function is called when an image is created
+        /// it reports to the log and executes the command
+        /// in the controller
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnCreated(object sender, FileSystemEventArgs e)
         {
             m_logging.Log(DateTime.Now.ToString() + " Image Created ", MessageTypeEnum.INFO);
@@ -79,13 +98,27 @@ namespace ImageService.Controller.Handlers
             bool result;
             m_controller.ExecuteCommand((int)CommandEnum.NewFileCommand, args, out result);
         }
-
+        /// <summary>
+        /// This function is invoked when filewatcher has an error
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnFileWatcherError(object sender, ErrorEventArgs e)
+        {
+            m_logging.Log(DateTime.Now.ToString() + " Error Detected In Handler Of Directory " + m_path, MessageTypeEnum.FAIL);
+            DirectoryCloseEventArgs args = new DirectoryCloseEventArgs(m_path, e.GetException().ToString());
+            DirectoryClose?.Invoke(this, args);
+            CloseHandler();
+        }
+        /// <summary>
+        /// Closes the handler and reports to the logger
+        /// </summary>
         private void CloseHandler()
         {
             foreach (FileSystemWatcher watcher in watchers)
             {
                 watcher.EnableRaisingEvents = false;
-                m_logging.Log("Handler Stopped Watching In Directory " + m_path, MessageTypeEnum.INFO);
+                m_logging.Log(DateTime.Now.ToString() + " Handler Stopped Watching In Directory " + m_path, MessageTypeEnum.INFO);
             }
         }
     }

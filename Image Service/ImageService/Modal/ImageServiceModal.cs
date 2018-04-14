@@ -25,11 +25,19 @@ namespace ImageService.Modal
         }
 
         #endregion
+        /// <summary>
+        /// This function gets a path to a file
+        /// copies it to the correct place in the output folder
+        /// creates a thumbnail and puts it in the correct folder as well
+        /// </summary>
+        /// <param name="imPath"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
         string IImageServiceModal.AddFile(string imPath, out bool result)
         {
-            // This function gets a path to a file
-            // copies it to the correct place in the output folder
-            // creates a thumbnail and puts it in the correct folder as well
+            // lets the thread sleep so the image can fully download to the directory
+            Thread.Sleep(50);
+            
             if (!Directory.Exists(m_OutputFolder))
             {
                 CreateDir(imPath, out result);
