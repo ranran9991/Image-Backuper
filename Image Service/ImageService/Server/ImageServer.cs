@@ -29,28 +29,41 @@ namespace ImageService.Server
                 CreateHandler(path);
             }
         }
-
+        /// <summary>
+        /// Creates handler for a given directory path
+        /// </summary>
+        /// <param name="directory"></param>
         private void CreateHandler(string directory)
         {
             IDirectoryHandler handler = new DirectoyHandler(m_controller, m_logger);
             handler.StartHandleDirectory(directory);
-            handler.DirectoryClose += DirectoryError;
+            handler.DirectoryClose += onDirectoryError;
             m_logger.Log(DateTime.Now.ToString() + " deployed handler in directory " + directory, MessageTypeEnum.INFO);
             CommandRecieved += handler.OnCommandRecieved;
         }
-
+        /// <summary>
+        /// sends a command to the handlers that registered in the CommandRecieved event
+        /// </summary>
+        /// <param name="command"></param>
         private void SendCommand(CommandRecievedEventArgs command)
         {
             CommandRecieved?.Invoke(this, command);
         }
-
+        /// <summary>
+        /// Closes the server and invoking the closure of the handlers through the 
+        /// appropriate event
+        /// </summary>
         public void CloseServer()
         {
             CommandRecievedEventArgs command = new CommandRecievedEventArgs((int)CommandEnum.CloseCommand, new string[] { }, "");
             CommandRecieved?.Invoke(this, command);
         }
-
-        private void DirectoryError(object sender, DirectoryCloseEventArgs e)
+        /// <summary>
+        /// handlers an error in a directory
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void onDirectoryError(object sender, DirectoryCloseEventArgs e)
         {
             IDirectoryHandler handler = (IDirectoryHandler) sender;
             CommandRecieved -= handler.OnCommandRecieved;

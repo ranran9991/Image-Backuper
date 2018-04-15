@@ -70,7 +70,6 @@ namespace ImageService
             string logName = ConfigurationManager.AppSettings["LogName"];
             int thumbnailSize = int.Parse(ConfigurationManager.AppSettings["ThumbnailSize"]);
 
-            eventLogger.WriteEntry(DateTime.Now.ToString() + " Service Started");
 
             List<string> pathsList = new List<string>();
 
@@ -97,25 +96,23 @@ namespace ImageService
             eventLogger.Source = sourceName;
             eventLogger.Log = logName;
 
-            if (paths.Length == 0)
-            {
-                eventLogger.WriteEntry(DateTime.Now.ToString() + "No Valid Paths To Directories");
-            }
-            else
-            {
-                logging = new LoggingModal();
-                logging.MessageRecieved += OnMessageRecieved;
+            eventLogger.WriteEntry(DateTime.Now.ToString() + " Service Started");
 
-                imageModal = new ImageServiceModal(outputDir, thumbnailSize);
-                controller = new ImageController(imageModal);
-                m_imageServer = new ImageServer(paths, imageModal, logging, controller);
-            }
+
+
+            logging = new LoggingModal();
+            logging.MessageRecieved += OnMessageRecieved;
+
+            imageModal = new ImageServiceModal(outputDir, thumbnailSize);
+            controller = new ImageController(imageModal);
+            m_imageServer = new ImageServer(paths, imageModal, logging, controller);
+            
         }
 
         protected override void OnStop()
         {
             eventLogger.WriteEntry(DateTime.Now.ToString() + " Service Stopped");
-            m_imageServer.CloseServer();
+            m_imageServer?.CloseServer();
 
         }
         public void OnMessageRecieved(object sender, MessageRecievedEventArgs e)

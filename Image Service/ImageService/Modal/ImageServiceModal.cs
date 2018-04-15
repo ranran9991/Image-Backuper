@@ -73,6 +73,7 @@ namespace ImageService.Modal
             int i = 1;
             while (true)
             {
+                tempPath = imPath;
                 if(!File.Exists(Path.Combine(thumbnailDir, Path.GetFileName(tempPath))))
                 {
                     thumb.Save(Path.Combine(thumbnailDir, Path.GetFileName(tempPath)));
@@ -117,6 +118,7 @@ namespace ImageService.Modal
             tempPath = outPath;
             i = 1;
             while (true){
+                tempPath = outPath;
                 if (!File.Exists(tempPath))
                 {
                     MoveFile(imPath, tempPath, out result);
@@ -146,7 +148,12 @@ namespace ImageService.Modal
                 return e.ToString();
             }
         }
-
+        /// <summary>
+        /// Moves a file from inputPath to outputPath
+        /// </summary>
+        /// <param name="inputPath"></param>
+        /// <param name="outputPath"></param>
+        /// <param name="result"></param>
         void MoveFile(string inputPath, string outputPath, out bool result)
         {
             try
@@ -159,7 +166,12 @@ namespace ImageService.Modal
                 result = false;
             }
         }
-
+        /// <summary>
+        /// Gets the date in which a picture in path was taken
+        /// if a date doesnt exist, take the creation date
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static DateTime getDateTaken(string path)
         {
             try
@@ -179,6 +191,14 @@ namespace ImageService.Modal
             }
 
         }
+        /// <summary>
+        /// adds the suffix to the file name while ignoring the extension
+        /// for example if filename = C:\image.jpg and suffix = 1 it will output
+        /// C:image1.jpg
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="suffix"></param>
+        /// <returns></returns>
         string AddSuffix(string filename, string suffix)
         {
             string fDir = Path.GetDirectoryName(filename);
