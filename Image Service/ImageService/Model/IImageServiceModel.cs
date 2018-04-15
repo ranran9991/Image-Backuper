@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ImageService.Modal
+namespace ImageService.Model
 {
-    public interface IImageServiceModal
+    public interface IImageServiceModel
     {
         /// <summary>
         /// The Function Addes A file to the system

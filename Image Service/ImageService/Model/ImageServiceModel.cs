@@ -10,15 +10,15 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ImageService.Modal
+namespace ImageService.Model
 {
-    public class ImageServiceModal : IImageServiceModal
+    public class ImageServiceModel : IImageServiceModel
     {
         #region Members
         private string m_OutputFolder;            // The Output Folder
         private int m_thumbnailSize;              // The Size Of The Thumbnail Size
 
-        public ImageServiceModal(string outPutDir, int thumbnailSize)
+        public ImageServiceModel(string outPutDir, int thumbnailSize)
         {
             m_OutputFolder = outPutDir;
             m_thumbnailSize = thumbnailSize;
@@ -33,7 +33,7 @@ namespace ImageService.Modal
         /// <param name="imPath"></param>
         /// <param name="result"></param>
         /// <returns></returns>
-        string IImageServiceModal.AddFile(string imPath, out bool result)
+        string IImageServiceModel.AddFile(string imPath, out bool result)
         {
             // lets the thread sleep so the image can fully download to the directory
             Thread.Sleep(200);
@@ -43,13 +43,13 @@ namespace ImageService.Modal
                 string error = CreateDir(m_OutputFolder, out result);
                 if (!result)
                 {
-                    return "FileCreationError1";
+                    return null;
                 }
             }
             if (!File.Exists(imPath))
             {
                 result = false;
-                return "ImageError";
+                return null;
             }
             //handeling thumbnail
            
@@ -62,7 +62,7 @@ namespace ImageService.Modal
                 CreateDir(thumbnailDir, out result);
                 if (!result)
                 {
-                    return "FileCreationError2";
+                    return null;
                 }
             }
             // saves thumbnail to the path
@@ -98,7 +98,7 @@ namespace ImageService.Modal
                 if (!createSuccessful)
                 {
                     result = false;
-                    return "FileCreationError3";
+                    return null;
                 }
             }
             //create month dir
@@ -108,7 +108,7 @@ namespace ImageService.Modal
                 CreateDir(monthPath, out result);
                 if (!result)
                 {
-                    return "FileCreationError4";
+                    return null;
                 }
             }
             string outPath = Path.Combine(monthPath, Path.GetFileName(imPath));
@@ -131,7 +131,7 @@ namespace ImageService.Modal
                 }
             }
            
-            return null;
+            return outPath;
         }
 
         string CreateDir(string path, out bool result)

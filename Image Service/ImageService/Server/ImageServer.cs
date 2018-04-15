@@ -3,8 +3,8 @@ using ImageService.Controller;
 using ImageService.Controller.Handlers;
 using ImageService.Infrastructure.Enums;
 using ImageService.Logging;
-using ImageService.Logging.Modal;
-using ImageService.Modal;
+using ImageService.Logging.Model;
+using ImageService.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,10 +17,10 @@ namespace ImageService.Server
     public class ImageServer
     {
         private IImageController m_controller;
-        private ILoggingModal m_logger;
+        private ILoggingModel m_logger;
         public event EventHandler<CommandRecievedEventArgs> CommandRecieved;
 
-        public ImageServer(string[] paths, IImageServiceModal imageModal, ILoggingModal log, IImageController controller)
+        public ImageServer(string[] paths, IImageServiceModel imageModel, ILoggingModel log, IImageController controller)
         {
             m_logger = log;
             m_controller = controller;

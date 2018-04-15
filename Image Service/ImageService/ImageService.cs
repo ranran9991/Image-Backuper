@@ -9,9 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.Configuration;
-using ImageService.Logging.Modal;
+using ImageService.Logging.Model;
 using ImageService.Server;
-using ImageService.Modal;
+using ImageService.Model;
 using ImageService.Controller;
 using System.IO;
 
@@ -43,9 +43,9 @@ namespace ImageService
     public partial class ImageService : ServiceBase
     {
         private ImageServer m_imageServer;          // The Image Server
-        private IImageServiceModal imageModal;
+        private IImageServiceModel imageModel;
         private IImageController controller;
-        private ILoggingModal logging;
+        private ILoggingModel logging;
 
         public ImageService()
         {
@@ -100,12 +100,12 @@ namespace ImageService
 
 
 
-            logging = new LoggingModal();
+            logging = new LoggingModel();
             logging.MessageRecieved += OnMessageRecieved;
 
-            imageModal = new ImageServiceModal(outputDir, thumbnailSize);
-            controller = new ImageController(imageModal);
-            m_imageServer = new ImageServer(paths, imageModal, logging, controller);
+            imageModel = new ImageServiceModel(outputDir, thumbnailSize);
+            controller = new ImageController(imageModel);
+            m_imageServer = new ImageServer(paths, imageModel, logging, controller);
             
         }
 

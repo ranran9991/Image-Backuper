@@ -1,7 +1,7 @@
 ﻿using ImageService.Commands;
 using ImageService.Infrastructure;
 using ImageService.Infrastructure.Enums;
-using ImageService.Modal;
+using ImageService.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,15 +12,15 @@ namespace ImageService.Controller
 {
     public class ImageController : IImageController
     {
-        private IImageServiceModal m_modal;                      // The Modal Object
+        private IImageServiceModel m_Model;                      // The Model Object
         private Dictionary<int, ICommand> commands;
 
-        public ImageController(IImageServiceModal modal)
+        public ImageController(IImageServiceModel Model)
         {
-            m_modal = modal;                    // Storing the Modal Of The System
+            m_Model = Model;                    // Storing the Model Of The System
             commands = new Dictionary<int, ICommand>();
             
-            commands.Add((int)CommandEnum.NewFileCommand, new NewFileCommand(m_modal));
+            commands.Add((int)CommandEnum.NewFileCommand, new NewFileCommand(m_Model));
             commands.Add((int)CommandEnum.CloseCommand, new CloseCommand());
         }
         /// <summary>
@@ -38,12 +38,13 @@ namespace ImageService.Controller
             // this is an akward solution to the problem that i cant bass resultSuccesful
             // to an ansynchronious method.
             if (res == null)
+                //if the function returned null it wasn't sucessful
             {
-                resultSuccesful = true;
+                resultSuccesful = false;
             }
             else
-            { 
-                resultSuccesful = false;
+            {
+                resultSuccesful = true;
 
             }
             return res;

@@ -62,14 +62,14 @@
     <Compile Include="ImageService\ImageService.Designer.cs">
       <DependentUpon>ImageService.cs</DependentUpon>
     </Compile>
-    <Compile Include="ImageService.Logging\ILoggingModal.cs" />
-    <Compile Include="ImageService.Logging\LoggingModal.cs" />
-    <Compile Include="ImageService.Logging\Modal\MessageRecievedEventArgs.cs" />
-    <Compile Include="ImageService.Logging\Modal\MessageTypeEnum.cs" />
-    <Compile Include="ImageService\Modal\Event\CommandRecievedEventArgs.cs" />
-    <Compile Include="ImageService\Modal\Event\DirectoryCloseEventArgs.cs" />
-    <Compile Include="ImageService\Modal\IImageServiceModal.cs" />
-    <Compile Include="ImageService\Modal\ImageServiceModal.cs" />
+    <Compile Include="ImageService.Logging\ILoggingModel.cs" />
+    <Compile Include="ImageService.Logging\LoggingModel.cs" />
+    <Compile Include="ImageService.Logging\Model\MessageRecievedEventArgs.cs" />
+    <Compile Include="ImageService.Logging\Model\MessageTypeEnum.cs" />
+    <Compile Include="ImageService\Model\Event\CommandRecievedEventArgs.cs" />
+    <Compile Include="ImageService\Model\Event\DirectoryCloseEventArgs.cs" />
+    <Compile Include="ImageService\Model\IImageServiceModel.cs" />
+    <Compile Include="ImageService\Model\ImageServiceModel.cs" />
     <Compile Include="ImageService\Program.cs" />
     <Compile Include="ImageService\Server\ImageServer.cs" />
     <Compile Include="ProjectInstaller.cs">

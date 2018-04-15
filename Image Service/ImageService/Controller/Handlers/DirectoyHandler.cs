@@ -1,4 +1,4 @@
-﻿using ImageService.Modal;
+﻿using ImageService.Model;
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using ImageService.Infrastructure;
 using ImageService.Infrastructure.Enums;
 using ImageService.Logging;
-using ImageService.Logging.Modal;
+using ImageService.Logging.Model;
 using System.Text.RegularExpressions;
 
 namespace ImageService.Controller.Handlers
@@ -17,14 +17,14 @@ namespace ImageService.Controller.Handlers
     {
        
         private IImageController m_controller;              // The Image Processing Controller
-        private ILoggingModal m_logging;
+        private ILoggingModel m_logging;
         private List<FileSystemWatcher> watchers = new List<FileSystemWatcher>();           // The Watcher of the Dir
         private string m_path;                              // The Path of directory
     
 
         public event EventHandler<DirectoryCloseEventArgs> DirectoryClose;              // The Event That Notifies that the Directory is being closed
 
-		public DirectoyHandler(IImageController controller, ILoggingModal log)
+		public DirectoyHandler(IImageController controller, ILoggingModel log)
         {
             m_controller = controller;
             m_logging = log;
@@ -93,7 +93,6 @@ namespace ImageService.Controller.Handlers
         /// <param name="e"></param>
         private void OnCreated(object sender, FileSystemEventArgs e)
         {
-            m_logging.Log(DateTime.Now.ToString() + " Image Created ", MessageTypeEnum.INFO);
             string[] args = { e.FullPath };
             bool result;
             string res;
@@ -104,7 +103,10 @@ namespace ImageService.Controller.Handlers
                 m_logging.Log(DateTime.Now.ToString() + " " + res, MessageTypeEnum.FAIL);
                 DirectoryClose?.Invoke(this, new DirectoryCloseEventArgs(m_path, res));
                 CloseHandler();
+                return;
             }
+            m_logging.Log(DateTime.Now.ToString() + " Image Created: " + res, MessageTypeEnum.INFO);
+
         }
         /// <summary>
         /// This function is invoked when filewatcher has an error

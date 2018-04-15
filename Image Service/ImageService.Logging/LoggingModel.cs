@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ImageService.Logging.Modal
+namespace ImageService.Logging.Model
 {
-    public class LoggingModal : ILoggingModal
+    public class LoggingModel : ILoggingModel
     {
         public event EventHandler<MessageRecievedEventArgs> MessageRecieved;
-        void ILoggingModal.Log(string message, MessageTypeEnum type)
+        void ILoggingModel.Log(string message, MessageTypeEnum type)
         {
             //initializing a MessageRecievedEvent
             MessageRecievedEventArgs e = new MessageRecievedEventArgs
