@@ -63,7 +63,8 @@ namespace ImageService.Controller.Handlers
         /// <param name="e"></param>
         public void OnCommandRecieved(object sender, CommandRecievedEventArgs e)
         {
-            if (e.CommandID == (int)CommandEnum.CloseCommand)
+            if (e.CommandID == (int)CommandEnum.CloseCommand && 
+                (e.RequestDirPath == m_path || e.RequestDirPath == null))
             {
                 CloseHandler();
                 return;

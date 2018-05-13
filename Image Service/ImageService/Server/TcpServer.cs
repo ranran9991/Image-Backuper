@@ -47,7 +47,7 @@ namespace Image_Service.ImageService.Server
                     {
                         TcpClient client = listener.AcceptTcpClient();
                         Console.WriteLine("Got new connection");
-                        ch.HandleClient(client);
+                        ch.HandleClient(client, clients);
                     }
                     catch (SocketException)
                     {

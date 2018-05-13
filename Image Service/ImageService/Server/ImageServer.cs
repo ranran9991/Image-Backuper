@@ -1,4 +1,5 @@
-﻿using ImageService.Commands;
+﻿using Image_Service.ImageService.Server;
+using ImageService.Commands;
 using ImageService.Controller;
 using ImageService.Controller.Handlers;
 using ImageService.Infrastructure.Enums;
@@ -9,12 +10,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ImageService.Server
 {
-    public class ImageServer
+    public class ImageServer : IClientHandler
     {
         private IImageController m_controller;
         private ILoggingModel m_logger;
@@ -67,6 +69,30 @@ namespace ImageService.Server
         {
             IDirectoryHandler handler = (IDirectoryHandler) sender;
             CommandRecieved -= handler.OnCommandRecieved;
+        }
+
+        public void HandleClient(TcpClient client, List<TcpClient> clients)
+        {
+            Task task = new Task(() => {
+                bool success;
+                NetworkStream stream = client.GetStream();
+                BinaryReader reader = new BinaryReader(stream);
+                while (true)
+                {
+                    string commandLine = reader.ReadString();
+
+                    CommandRecievedEventArgs cmdArgs = CommandRecievedEventArgs.FromJSON(commandLine.ToString());
+                    if(cmdArgs.CommandID == (int)CommandEnum.CloseClientCommand)
+                    {
+                        // if the client wants to disconnect
+                        clients.Remove(client);
+                        client.Close();
+                    }
+                    m_controller.ExecuteCommand(cmdArgs.CommandID, cmdArgs.Args, out success);
+                }
+            });
+            task.Start();
+
         }
     }
 }

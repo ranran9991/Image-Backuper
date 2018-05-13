@@ -12,8 +12,8 @@ namespace ImageService.Controller
 {
     public class ImageController : IImageController
     {
-        private IImageServiceModel m_Model;                      // The Model Object
-        private Dictionary<int, ICommand> commands;
+        private IImageServiceModel m_Model;               // The Model Object
+        public Dictionary<int, ICommand> commands;
 
         public ImageController(IImageServiceModel Model)
         {
@@ -35,7 +35,7 @@ namespace ImageService.Controller
             ICommand command = commands[commandID];
             Task<string> t = Task<string>.Run(() => command.Execute(args, out bool temp));
             string res = t.Result;
-            // this is an akward solution to the problem that i cant bass resultSuccesful
+            // this is an akward solution to the problem that i cant pass resultSuccesful
             // to an ansynchronious method.
             if (res == null)
                 //if the function returned null it wasn't sucessful
