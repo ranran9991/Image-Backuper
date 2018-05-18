@@ -54,15 +54,20 @@ namespace Image_Service.ImageService.Server
                     try
                     {
                         TcpClient client = listener.AcceptTcpClient();
-                        Console.WriteLine("Got new connection");
+                        
+                        m_mutex.WaitOne();
+                        clients.Add(client);
+                        m_muted.ReleaseMutex();
+                        
                         ch.HandleClient(client, clients);
                     }
                     catch (SocketException)
                     {
+                        clients.Remove(client);
                         break;
                     }
                 }
-                Console.WriteLine("Server stopped");
+                
             });
             task.Start();
         }
