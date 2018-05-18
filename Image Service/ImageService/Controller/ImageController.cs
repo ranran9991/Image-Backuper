@@ -5,6 +5,7 @@ using ImageService.Infrastructure.Enums;
 using ImageService.Logging.Model;
 using ImageService.Model;
 using ImageService.Server;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
@@ -78,19 +79,26 @@ namespace ImageService.Controller
                 while (true)
                 {
                     string commandLine = reader.ReadString();
-
-                    CommandRecievedEventArgs cmdArgs = CommandRecievedEventArgs.FromJSON(commandLine.ToString());
-                    if (cmdArgs.CommandID == (int)CommandEnum.CloseClientCommand)
+                    try
                     {
-                        // if the client wants to disconnect
-                        clients.Remove(client);
-                        client.Close();
-                    }
-                    // execute the command
-                    string cmdOut = ExecuteCommand(cmdArgs.CommandID, cmdArgs.Args, out success);
+                        CommandRecievedEventArgs cmdArgs = CommandRecievedEventArgs.FromJSON(commandLine.ToString());
+                        if (cmdArgs.CommandID == (int)CommandEnum.CloseClientCommand)
+                        {
+                            // if the client wants to disconnect
+                            clients.Remove(client);
+                            client.Close();
+                        }
+                        // execute the command
+                        string cmdOut = ExecuteCommand(cmdArgs.CommandID, cmdArgs.Args, out success);
 
-                    // write output of command to client
-                    writer.Write(cmdOut);
+                        // write output of command to client
+                        writer.Write(cmdOut);
+                    }
+                    catch (Exception)
+                    {
+                        m_log.Log(DateTime.Now.ToString() + " Caught Exception in client", MessageTypeEnum.WARNING);
+                        return;
+                    }
                 }
             });
             task.Start();
