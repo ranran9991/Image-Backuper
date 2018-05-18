@@ -1,4 +1,7 @@
-﻿namespace ImageService
+﻿using System;
+using System.Diagnostics;
+
+namespace ImageService
 {
     partial class ImageService
     {
@@ -39,6 +42,11 @@
             this.ServiceName = "ImageService";
             ((System.ComponentModel.ISupportInitialize)(this.eventLogger)).EndInit();
 
+        }
+
+        private void eventLogger_EntryWritten(object sender, EntryWrittenEventArgs e)
+        {
+            
         }
 
         #endregion

@@ -16,20 +16,28 @@ using System.Threading.Tasks;
 
 namespace ImageService.Server
 {
-    public class ImageServer : IClientHandler
+    public class ImageServer
     {
+        public delegate void NotifyClients(CommandRecievedEventArgs cmndRecieved);
+        public static event NotifyClients NotifyHandlerRemoved;
         private IImageController m_controller;
         private ILoggingModel m_logger;
         public event EventHandler<CommandRecievedEventArgs> CommandRecieved;
+        public List<string> pathList;
 
         public ImageServer(string[] paths, IImageServiceModel imageModel, ILoggingModel log, IImageController controller)
         {
             m_logger = log;
             m_controller = controller;
+            pathList = new List<string>(paths);
             foreach (string path in paths)
             {
                 CreateHandler(path);
             }
+        }
+        public void RaiseNotifiyEvent(CommandRecievedEventArgs args)
+        {
+            ImageServer.NotifyHandlerRemoved?.Invoke(args);
         }
         /// <summary>
         /// Creates handler for a given directory path
@@ -69,30 +77,20 @@ namespace ImageService.Server
         {
             IDirectoryHandler handler = (IDirectoryHandler) sender;
             CommandRecieved -= handler.OnCommandRecieved;
+            pathList.Remove(e.DirectoryPath);
+            CommandRecievedEventArgs cmdRecieved = new CommandRecievedEventArgs((int)CommandEnum.HandlerRemoveCommand, null, e.DirectoryPath);
+            NotifyHandlerRemoved?.Invoke(cmdRecieved);
         }
-
-        public void HandleClient(TcpClient client, List<TcpClient> clients)
+        /// <summary>
+        /// Gets a path for a handler, closes that handler
+        /// </summary>
+        /// <param name="path"></param>
+        public void closeSpecificHandler(string path)
         {
-            Task task = new Task(() => {
-                bool success;
-                NetworkStream stream = client.GetStream();
-                BinaryReader reader = new BinaryReader(stream);
-                while (true)
-                {
-                    string commandLine = reader.ReadString();
-
-                    CommandRecievedEventArgs cmdArgs = CommandRecievedEventArgs.FromJSON(commandLine.ToString());
-                    if(cmdArgs.CommandID == (int)CommandEnum.CloseClientCommand)
-                    {
-                        // if the client wants to disconnect
-                        clients.Remove(client);
-                        client.Close();
-                    }
-                    m_controller.ExecuteCommand(cmdArgs.CommandID, cmdArgs.Args, out success);
-                }
-            });
-            task.Start();
-
+            pathList.Remove(path);
+            CommandRecievedEventArgs cmdRecieved = new CommandRecievedEventArgs((int)CommandEnum.CloseCommand, null, path);
+            NotifyHandlerRemoved?.Invoke(cmdRecieved);
         }
+
     }
 }

@@ -53,7 +53,10 @@
   <ItemGroup>
     <Compile Include="ImageService.Infrastructure\Enums\CommandEnum.cs" />
     <Compile Include="ImageService\Command\CloseCommand.cs" />
+    <Compile Include="ImageService\Command\ConfigCommand.cs" />
+    <Compile Include="ImageService\Command\HandlerRemoveCommand.cs" />
     <Compile Include="ImageService\Command\ICommand.cs" />
+    <Compile Include="ImageService\Command\LogCommand.cs" />
     <Compile Include="ImageService\Command\NewFileCommand.cs" />
     <Compile Include="ImageService\Controller\Handlers\DirectoyHandler.cs" />
     <Compile Include="ImageService\Controller\Handlers\IDirectoryHandler.cs" />
@@ -74,7 +77,7 @@
     <Compile Include="ImageService\Model\IImageServiceModel.cs" />
     <Compile Include="ImageService\Model\ImageServiceModel.cs" />
     <Compile Include="ImageService\Program.cs" />
-    <Compile Include="ImageService\Server\IClientHandler.cs" />
+    <Compile Include="ImageService\Controller\IClientHandler.cs" />
     <Compile Include="ImageService\Server\ImageServer.cs" />
     <Compile Include="ImageService\Server\TcpServer.cs" />
     <Compile Include="ProjectInstaller.cs">

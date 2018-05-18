@@ -14,6 +14,7 @@ using ImageService.Server;
 using ImageService.Model;
 using ImageService.Controller;
 using System.IO;
+using Image_Service.ImageService.Server;
 
 public enum ServiceState
 {
@@ -46,7 +47,7 @@ namespace ImageService
         private IImageServiceModel imageModel;
         private IImageController controller;
         private ILoggingModel logging;
-
+        private TcpServer srv;
         public ImageService()
         {
             // Update the service state to Start Pending.  
@@ -99,21 +100,26 @@ namespace ImageService
             eventLogger.WriteEntry(DateTime.Now.ToString() + " Service Started");
 
 
-
+            // initialize logging
             logging = new LoggingModel();
             logging.MessageRecieved += OnMessageRecieved;
-
+            // initialize servers controllers and modals
             imageModel = new ImageServiceModel(outputDir, thumbnailSize);
-            controller = new ImageController(imageModel);
+            controller = new ImageController(imageModel, logging);
             m_imageServer = new ImageServer(paths, imageModel, logging, controller);
-            
+            srv = new TcpServer("127.0.0.1", 8000, (IClientHandler)controller);
+            ImageServer.NotifyHandlerRemoved += srv.Notify;
+            this.logging.NotifyLogChanged += srv.Notify;
+
+            // start handeling clients
+            srv.Start();
         }
 
         protected override void OnStop()
         {
             eventLogger.WriteEntry(DateTime.Now.ToString() + " Service Stopped");
             m_imageServer?.CloseServer();
-
+            srv.Stop();
         }
         public void OnMessageRecieved(object sender, MessageRecievedEventArgs e)
         {
@@ -132,10 +138,5 @@ namespace ImageService
         }
         [DllImport("advapi32.dll", SetLastError = true)]
         private static extern bool SetServiceStatus(IntPtr handle, ref ServiceStatus serviceStatus);
-
-        private void eventLogger_EntryWritten(object sender, EntryWrittenEventArgs e)
-        {
-
-        }
     }
 }

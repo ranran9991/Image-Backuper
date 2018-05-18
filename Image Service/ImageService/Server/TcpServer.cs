@@ -1,16 +1,20 @@
-﻿using System;
+﻿using ImageService.Controller;
+using ImageService.Model;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Image_Service.ImageService.Server
 {
     class TcpServer
     {
+        Mutex m_mutex;
         public string Ip { get; set; }
         public int Port { get; set; }
         public List<TcpClient> clients;
@@ -22,16 +26,20 @@ namespace Image_Service.ImageService.Server
             Ip = ip;
             Port = port;
             ch = handler;
+            m_mutex = new Mutex();
         }
 
-        public void Notify(string msg)
+        public void Notify(CommandRecievedEventArgs cmdRecieved)
         {
             foreach(TcpClient client in clients)
             {
                 NetworkStream stream = client.GetStream();
                 StreamWriter writer = new StreamWriter(stream);
 
-                writer.Write(msg);
+                string jsonCommand = cmdRecieved.ToJSON();
+                m_mutex.WaitOne();
+                writer.Write(jsonCommand);
+                m_mutex.ReleaseMutex();
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,5 +11,16 @@ namespace ImageService.Logging.Model
     {
         public MessageTypeEnum Status { get; set; }
         public string Message { get; set; }
+
+        public string ToJSON()
+        {
+            JObject Jobj = new JObject();
+            Jobj["Status"] = (int)Status;
+            Jobj["Message"] = Message;
+
+            return Jobj.ToString();
+        }
     }
+
+    
 }
