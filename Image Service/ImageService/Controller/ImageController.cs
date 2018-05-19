@@ -102,7 +102,6 @@ namespace ImageService.Controller
                 }
             });
             task.Start();
-
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ImageService.Controller;
+using ImageService.Infrastructure.Enums;
 using ImageService.Model;
 using System;
 using System.Collections.Generic;
@@ -55,6 +56,11 @@ namespace Image_Service.ImageService.Server
                     {
                         TcpClient client = listener.AcceptTcpClient();
                         Console.WriteLine("Got new connection");
+
+                        m_mutex.WaitOne();
+                        clients.Add(client);
+                        m_mutex.ReleaseMutex();
+
                         ch.HandleClient(client, clients);
                     }
                     catch (SocketException)
@@ -69,6 +75,10 @@ namespace Image_Service.ImageService.Server
         
         public void Stop()
         {
+            // tell clients that server is closing
+            CommandRecievedEventArgs closeCmnd = new CommandRecievedEventArgs((int)CommandEnum.ServerCloseCommand, null, null);
+            Notify(closeCmnd);
+            // stop listening to new clients
             listener.Stop();
         }
     }

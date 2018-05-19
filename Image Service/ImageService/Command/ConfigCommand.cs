@@ -28,7 +28,7 @@ namespace Image_Service.ImageService.Command
                 pathJSON.Add(path);
             }
             JsonConfig["Handler"] = pathJSON;
-            JsonConfig["OutputDIr"] = ConfigurationManager.AppSettings["OutputDir"];
+            JsonConfig["OutputDir"] = ConfigurationManager.AppSettings["OutputDir"];
             JsonConfig["SourceName"] = ConfigurationManager.AppSettings["SourceName"];
             JsonConfig["LogName"] = ConfigurationManager.AppSettings["LogName"];
             JsonConfig["ThumbnailSize"] = ConfigurationManager.AppSettings["ThumbnailSize"];
