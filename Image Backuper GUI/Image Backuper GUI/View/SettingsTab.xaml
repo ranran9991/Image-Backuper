@@ -1,0 +1,56 @@
+﻿<TabItem x:Class="Image_Backuper_GUI.View.SettingsTab"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Image_Backuper_GUI.View"
+        mc:Ignorable="d"
+        Header="Settings"
+        Height="30"
+        VerticalAlignment="Center">
+    <StackPanel Margin="3">
+        <TextBlock Margin="3" Foreground="Blue" FontSize="30" HorizontalAlignment="Center" FontWeight="Bold"> Settings</TextBlock>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Margin="3" VerticalAlignment="Center" FontWeight="Bold">Output Directory:</Label>
+            <TextBlock Grid.Row="0" Grid.Column="1" Margin="3"  VerticalAlignment="Center" Text="{Binding OutputDir}"></TextBlock>
+            <Label Grid.Row="1" Grid.Column="0" Margin="3" VerticalAlignment="Center" FontWeight="Bold">Source Name:</Label>
+            <TextBlock Grid.Row="1" Grid.Column="1" Margin="3"  VerticalAlignment="Center" Text="{Binding SourceName}"></TextBlock>
+            <Label Grid.Row="2" Grid.Column="0" Margin="3" VerticalAlignment="Center" FontWeight="Bold">Log Name:</Label>
+            <TextBlock Grid.Row="2" Grid.Column="1" Margin="3"  VerticalAlignment="Center" Text="{Binding LogName}"></TextBlock>
+            <Label Grid.Row="3" Grid.Column="0" Margin="3" VerticalAlignment="Center" FontWeight="Bold">Thumbnail Size:</Label>
+            <TextBlock Grid.Row="3" Grid.Column="1" Margin="3"  VerticalAlignment="Center" Text="{Binding ThumbnailSize}"></TextBlock>
+        </Grid>
+        <Button Content="Remove" 
+                Name="remove" 
+                Height="30" 
+                IsEnabled="False" 
+                Click="removeClick"/>
+        <ListBox SelectedIndex="-1"
+                 SelectionMode="Single" 
+                 Name="dirList" 
+                 ItemsSource="{Binding directoryList}" 
+                 ScrollViewer.CanContentScroll="True" 
+                 ScrollViewer.IsDeferredScrollingEnabled="True" 
+                 ScrollViewer.VerticalScrollBarVisibility="Visible" 
+                 MaxHeight="180" 
+                 GotFocus="ListGotFocus">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="{Binding}" Height="30"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </StackPanel>
+</TabItem>

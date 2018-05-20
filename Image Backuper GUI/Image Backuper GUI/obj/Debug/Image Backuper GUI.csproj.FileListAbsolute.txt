@@ -1,0 +1,21 @@
+c:\users\guest\documents\visual studio 2015\Projects\Image Backuper GUI\Image Backuper GUI\bin\Debug\Image Backuper GUI.exe.config
+c:\users\guest\documents\visual studio 2015\Projects\Image Backuper GUI\Image Backuper GUI\bin\Debug\Image Backuper GUI.exe
+c:\users\guest\documents\visual studio 2015\Projects\Image Backuper GUI\Image Backuper GUI\bin\Debug\Image Backuper GUI.pdb
+c:\users\guest\documents\visual studio 2015\Projects\Image Backuper GUI\Image Backuper GUI\obj\Debug\Image Backuper GUI.csprojResolveAssemblyReference.cache
+c:\users\guest\documents\visual studio 2015\Projects\Image Backuper GUI\Image Backuper GUI\obj\Debug\App.g.cs
+c:\users\guest\documents\visual studio 2015\Projects\Image Backuper GUI\Image Backuper GUI\obj\Debug\Image Backuper GUI_MarkupCompile.cache
+c:\users\guest\documents\visual studio 2015\Projects\Image Backuper GUI\Image Backuper GUI\obj\Debug\Image Backuper GUI_MarkupCompile.lref
+c:\users\guest\documents\visual studio 2015\Projects\Image Backuper GUI\Image Backuper GUI\obj\Debug\Image Backuper GUI.g.resources
+c:\users\guest\documents\visual studio 2015\Projects\Image Backuper GUI\Image Backuper GUI\obj\Debug\Image_Backuper_GUI.Properties.Resources.resources
+c:\users\guest\documents\visual studio 2015\Projects\Image Backuper GUI\Image Backuper GUI\obj\Debug\Image Backuper GUI.csproj.GenerateResource.Cache
+c:\users\guest\documents\visual studio 2015\Projects\Image Backuper GUI\Image Backuper GUI\obj\Debug\Image Backuper GUI.exe
+c:\users\guest\documents\visual studio 2015\Projects\Image Backuper GUI\Image Backuper GUI\obj\Debug\Image Backuper GUI.pdb
+C:\Users\Guest\Documents\Visual Studio 2015\Projects\Image Backuper GUI\Image Backuper GUI\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Guest\Documents\Visual Studio 2015\Projects\Image Backuper GUI\Image Backuper GUI\obj\Debug\View\SettingsTab.g.cs
+C:\Users\Guest\Documents\Visual Studio 2015\Projects\Image Backuper GUI\Image Backuper GUI\obj\Debug\View\SettingsTab.baml
+C:\Users\Guest\Documents\Visual Studio 2015\Projects\Image Backuper GUI\Image Backuper GUI\obj\Debug\View\LogsTab.g.cs
+C:\Users\Guest\Documents\Visual Studio 2015\Projects\Image Backuper GUI\Image Backuper GUI\obj\Debug\View\LogsTab.baml
+C:\Users\Guest\Documents\Visual Studio 2015\Projects\Image Backuper GUI\Image Backuper GUI\obj\Debug\View\MainWindow.g.cs
+C:\Users\Guest\Documents\Visual Studio 2015\Projects\Image Backuper GUI\Image Backuper GUI\obj\Debug\View\MainWindow.baml
+C:\Users\Guest\Documents\Visual Studio 2015\Projects\Image Backuper GUI\Image Backuper GUI\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Guest\Documents\Visual Studio 2015\Projects\Image Backuper GUI\Image Backuper GUI\bin\Debug\Newtonsoft.Json.xml
