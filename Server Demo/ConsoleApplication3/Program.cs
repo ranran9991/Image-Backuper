@@ -32,13 +32,13 @@ namespace ServerDemo
                 writer.Write(c);
                 command = reader.ReadString();
                 MessageRecievedEventArgs log = new MessageRecievedEventArgs();
-                log.Message = "fuck this shit";
+                log.Message = "Test message 1;
                 log.Status = MessageTypeEnum.INFO;
                 MessageRecievedEventArgs log2 = new MessageRecievedEventArgs();
-                log2.Message = "bulbul";
+                log2.Message = "Test message 2;
                 log2.Status = MessageTypeEnum.WARNING;
                 MessageRecievedEventArgs log3 = new MessageRecievedEventArgs();
-                log3.Message = "gadol";
+                log3.Message = "Test message 3";
                 log3.Status = MessageTypeEnum.FAIL;
                 List<MessageRecievedEventArgs> logs = new List<MessageRecievedEventArgs> { log, log2, log3 };
                 string a = LogToJSON(logs);
@@ -46,7 +46,7 @@ namespace ServerDemo
                 Console.WriteLine("Sent logs and config");
                 Console.ReadKey();
                 MessageRecievedEventArgs log4 = new MessageRecievedEventArgs();
-                log4.Message = "anak";
+                log4.Message = "Test message 4";
                 log4.Status = MessageTypeEnum.WARNING;
                 string[] comArgs = new string[] { log4.ToJSON() };
                 CommandRecievedEventArgs com = new CommandRecievedEventArgs((int)CommandEnum.LogCommand, comArgs, "");
