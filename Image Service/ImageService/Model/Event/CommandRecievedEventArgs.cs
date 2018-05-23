@@ -20,7 +20,7 @@ namespace ImageService.Model
             JObject eventobj = new JObject();
             eventobj["CommandID"] = CommandID;
 
-            JArray args = new JArray(Args);
+            JArray args = JArray.FromObject(Args);
             eventobj["Args"] = args;
 
             eventobj["RequestDirPath"] = RequestDirPath;
@@ -35,19 +35,15 @@ namespace ImageService.Model
             int id = (int)cmJson["CommandID"];
 
             // parse args
-            JArray JArgs = (JArray)cmJson["Args"];
-            string[] args = new string[JArgs.Count];
-            int i = 0;
-            foreach (JToken tok in JArgs.Children())
-            {
-                args[i] = (string)tok;
-                i++;
-            }
+            JArray args = (JArray)cmJson["Args"];
+
+            string[] Args = args.ToObject<string[]>();
+           
 
             // parse path
             string path = (string)cmJson["RequestDirPath"];
 
-            CommandRecievedEventArgs cmArgs = new CommandRecievedEventArgs(id, args, path);
+            CommandRecievedEventArgs cmArgs = new CommandRecievedEventArgs(id, Args, path);
             return cmArgs;
         }
 

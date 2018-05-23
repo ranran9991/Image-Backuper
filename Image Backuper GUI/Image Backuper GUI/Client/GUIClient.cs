@@ -57,6 +57,7 @@ namespace Image_Backuper_GUI.Client
 
         public List<MessageRecievedEventArgs> GetLogs()
         {
+            Console.WriteLine("Getting Logs\n");
             if (!client.Connected) return null;
             CommandRecievedEventArgs command = new CommandRecievedEventArgs((int)CommandEnum.LogCommand, null, "");
             string Jcommand = command.ToJSON();
@@ -67,6 +68,7 @@ namespace Image_Backuper_GUI.Client
 
         public ConfigData GetConfig()
         {
+            Console.WriteLine("Getting config\n");
             if (!client.Connected) return new ConfigData(null, "", "", "", 0);
             CommandRecievedEventArgs command = new CommandRecievedEventArgs((int)CommandEnum.ConfigCommand, null, "");
             string Jcommand = command.ToJSON();

@@ -5,10 +5,12 @@ using ImageService.Infrastructure.Enums;
 using ImageService.Logging.Model;
 using ImageService.Model;
 using ImageService.Server;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ImageService.Controller
@@ -74,11 +76,12 @@ namespace ImageService.Controller
             Task task = new Task(() => {
                 bool success;
                 NetworkStream stream = client.GetStream();
-                BinaryReader reader = new BinaryReader(stream);
-                BinaryWriter writer = new BinaryWriter(stream);
+                BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, true);
+                BinaryWriter writer = new BinaryWriter(stream, Encoding.UTF8, true);
                 while (true)
                 {
                     string commandLine = reader.ReadString();
+                    m_log.Log("Got message from client: " + commandLine, MessageTypeEnum.INFO);
                     try
                     {
                         CommandRecievedEventArgs cmdArgs = CommandRecievedEventArgs.FromJSON(commandLine.ToString());
@@ -94,11 +97,22 @@ namespace ImageService.Controller
                         // write output of command to client
                         writer.Write(cmdOut);
                     }
-                    catch (Exception)
+                    catch (JsonException)
                     {
-                        m_log.Log(DateTime.Now.ToString() + " Caught Exception in client", MessageTypeEnum.WARNING);
+                        m_log.Log(DateTime.Now.ToString() + " JSON Caught Exception in client", MessageTypeEnum.WARNING);
+                        writer.Close();
+                        reader.Close();
                         return;
                     }
+                    catch (Exception)
+                    {
+                        m_log.Log(DateTime.Now.ToString() + " I/O Exception Caught in client", MessageTypeEnum.WARNING);
+                        writer.Close();
+                        reader.Close();
+                        return;
+                    }
+                    writer.Close();
+                    reader.Close();
                 }
             });
             task.Start();

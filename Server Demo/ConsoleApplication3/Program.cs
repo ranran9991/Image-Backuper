@@ -32,10 +32,10 @@ namespace ServerDemo
                 writer.Write(c);
                 command = reader.ReadString();
                 MessageRecievedEventArgs log = new MessageRecievedEventArgs();
-                log.Message = "Test message 1;
+                log.Message = "Test message 1";
                 log.Status = MessageTypeEnum.INFO;
                 MessageRecievedEventArgs log2 = new MessageRecievedEventArgs();
-                log2.Message = "Test message 2;
+                log2.Message = "Test message 2";
                 log2.Status = MessageTypeEnum.WARNING;
                 MessageRecievedEventArgs log3 = new MessageRecievedEventArgs();
                 log3.Message = "Test message 3";

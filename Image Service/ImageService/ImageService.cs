@@ -107,7 +107,8 @@ namespace ImageService
             imageModel = new ImageServiceModel(outputDir, thumbnailSize);
             controller = new ImageController(imageModel, logging);
             m_imageServer = new ImageServer(paths, imageModel, logging, controller);
-            srv = new TcpServer("127.0.0.1", 8000, (IClientHandler)controller);
+            controller.Server = m_imageServer;
+            srv = new TcpServer("127.0.0.1", 8000, (IClientHandler)controller, logging);
             ImageServer.NotifyHandlerRemoved += srv.Notify;
             this.logging.NotifyLogChanged += srv.Notify;
 
