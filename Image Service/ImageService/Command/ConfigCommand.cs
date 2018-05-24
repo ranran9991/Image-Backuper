@@ -1,4 +1,6 @@
 ﻿using ImageService.Commands;
+using ImageService.Infrastructure.Enums;
+using ImageService.Model;
 using ImageService.Server;
 using Newtonsoft.Json.Linq;
 using System;
@@ -32,10 +34,11 @@ namespace Image_Service.ImageService.Command
             JsonConfig["SourceName"] = ConfigurationManager.AppSettings["SourceName"];
             JsonConfig["LogName"] = ConfigurationManager.AppSettings["LogName"];
             JsonConfig["ThumbnailSize"] = ConfigurationManager.AppSettings["ThumbnailSize"];
-
+            string[] cmndArgs = { JsonConfig.ToString() };
+            CommandRecievedEventArgs cmndRecieved = new CommandRecievedEventArgs((int)CommandEnum.ConfigCommand, cmndArgs, null);
             result = true;
-            return JsonConfig.ToString();
-
+            return cmndRecieved.ToJSON();
+        
         }
     }
 }

@@ -12,7 +12,8 @@ namespace ImageService.Infrastructure.Enums
         CloseCommand,
         HandlerRemoveCommand,
         ConfigCommand,
-        LogCommand,
+        LogChangedCommand,
+        LogHistoryCommand,
         CloseClientCommand,
         ServerCloseCommand
     }

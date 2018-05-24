@@ -34,7 +34,7 @@ namespace ImageService.Logging.Model
             string jsonMessage = e.ToJSON();
             string[] args = new string[] { jsonMessage };
             
-            CommandRecievedEventArgs cmndRecieved = new CommandRecievedEventArgs((int)CommandEnum.LogCommand, args, null);
+            CommandRecievedEventArgs cmndRecieved = new CommandRecievedEventArgs((int)CommandEnum.LogChangedCommand, args, null);
             // calling handler on Event if its not null
             MessageRecieved?.Invoke(this, e);
             // tell clients that the log has changed

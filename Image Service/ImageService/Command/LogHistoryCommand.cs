@@ -1,5 +1,7 @@
 ﻿using ImageService.Commands;
+using ImageService.Infrastructure.Enums;
 using ImageService.Logging.Model;
+using ImageService.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,19 +10,20 @@ using System.Threading.Tasks;
 
 namespace Image_Service.ImageService.Command
 {
-    class LogCommand : ICommand
+    class LogHistoryCommand : ICommand
     {
         public ILoggingModel m_log;
-        public LogCommand(ILoggingModel mod)
+        public LogHistoryCommand(ILoggingModel mod)
         {
             m_log = mod;
         }
         public string Execute(string[] args, out bool result)
         {
             string logHistory = m_log.LogToJSON();
-
+            string[] cmndArgs = { logHistory };
+            CommandRecievedEventArgs cmndRecieved = new CommandRecievedEventArgs((int)CommandEnum.LogHistoryCommand, cmndArgs, null);
             result = true;
-            return logHistory;
+            return cmndRecieved.ToJSON();
         }
 
     }

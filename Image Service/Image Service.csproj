@@ -56,7 +56,7 @@
     <Compile Include="ImageService\Command\ConfigCommand.cs" />
     <Compile Include="ImageService\Command\HandlerRemoveCommand.cs" />
     <Compile Include="ImageService\Command\ICommand.cs" />
-    <Compile Include="ImageService\Command\LogCommand.cs" />
+    <Compile Include="ImageService\Command\LogHistoryCommand.cs" />
     <Compile Include="ImageService\Command\NewFileCommand.cs" />
     <Compile Include="ImageService\Controller\Handlers\DirectoyHandler.cs" />
     <Compile Include="ImageService\Controller\Handlers\IDirectoryHandler.cs" />

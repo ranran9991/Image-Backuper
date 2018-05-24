@@ -41,7 +41,7 @@ namespace ImageService.Controller
             commands = new Dictionary<int, ICommand>();
             
             commands.Add((int)CommandEnum.NewFileCommand, new NewFileCommand(m_Model));
-            commands.Add((int)CommandEnum.LogCommand, new LogCommand(m_log));
+            commands.Add((int)CommandEnum.LogHistoryCommand, new LogHistoryCommand(m_log));
             commands.Add((int)CommandEnum.CloseCommand, new CloseCommand());
         }
         /// <summary>
