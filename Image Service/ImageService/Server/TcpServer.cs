@@ -86,7 +86,7 @@ namespace Image_Service.ImageService.Server
         public void Stop()
         {
             // tell clients that server is closing
-            CommandRecievedEventArgs closeCmnd = new CommandRecievedEventArgs((int)CommandEnum.ServerCloseCommand, null, null);
+            CommandRecievedEventArgs closeCmnd = new CommandRecievedEventArgs((int)CommandEnum.CloseClientCommand, null, null);
             Notify(closeCmnd);
             // stop listening to new clients
             listener.Stop();
