@@ -20,6 +20,7 @@ namespace ServerDemo
             Console.WriteLine("Waiting for client connections...");
             TcpClient client = listener.AcceptTcpClient();
             Console.WriteLine("Client connected");
+
             using (NetworkStream stream = client.GetStream())
             using (BinaryReader reader = new BinaryReader(stream))
             using (BinaryWriter writer = new BinaryWriter(stream))
@@ -28,28 +29,35 @@ namespace ServerDemo
                 string command = reader.ReadString();
                 Console.WriteLine("Command accepted");
 
+                CommandRecievedEventArgs com;
+                string[] comArgs;
+
                 string c = ConfigToJSON();
-                writer.Write(c);
+                comArgs = new string[] { c };
+                com = new CommandRecievedEventArgs((int)CommandEnum.ConfigCommand, comArgs, "");
+                writer.Write(com.ToJSON());
                 command = reader.ReadString();
                 MessageRecievedEventArgs log = new MessageRecievedEventArgs();
-                log.Message = "Test message 1";
+                log.Message = "test 1";
                 log.Status = MessageTypeEnum.INFO;
                 MessageRecievedEventArgs log2 = new MessageRecievedEventArgs();
-                log2.Message = "Test message 2";
+                log2.Message = "test 2";
                 log2.Status = MessageTypeEnum.WARNING;
                 MessageRecievedEventArgs log3 = new MessageRecievedEventArgs();
-                log3.Message = "Test message 3";
+                log3.Message = "test 3";
                 log3.Status = MessageTypeEnum.FAIL;
                 List<MessageRecievedEventArgs> logs = new List<MessageRecievedEventArgs> { log, log2, log3 };
                 string a = LogToJSON(logs);
-                writer.Write(a);
+                comArgs = new string[] { a };
+                com = new CommandRecievedEventArgs((int)CommandEnum.LogHistoryCommand, comArgs, "");
+                writer.Write(com.ToJSON());
                 Console.WriteLine("Sent logs and config");
                 Console.ReadKey();
                 MessageRecievedEventArgs log4 = new MessageRecievedEventArgs();
-                log4.Message = "Test message 4";
+                log4.Message = "test 4";
                 log4.Status = MessageTypeEnum.WARNING;
-                string[] comArgs = new string[] { log4.ToJSON() };
-                CommandRecievedEventArgs com = new CommandRecievedEventArgs((int)CommandEnum.LogCommand, comArgs, "");
+                comArgs = new string[] { log4.ToJSON() };
+                com = new CommandRecievedEventArgs((int)CommandEnum.LogChangedCommand, comArgs, "");
                 writer.Write(com.ToJSON());
                 Console.WriteLine("Sent log");
                 Console.ReadKey();
@@ -179,7 +187,8 @@ namespace ServerDemo
         CloseCommand,
         HandlerRemoveCommand,
         ConfigCommand,
-        LogCommand,
+        LogChangedCommand,
+        LogHistoryCommand,
         CloseClientCommand
     }
 
