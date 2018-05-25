@@ -14,18 +14,36 @@ namespace Image_Backuper_GUI.Config
         public ConfigData(List<string> Handler, string OutputDir, string SourceName, string LogName, int ThumbnailSize)
         {
             handlersLock = new object();
+            dataLock = new object();
 
             try { this.Handler = new ObservableCollection<string>(Handler); }
             catch { }
-            this.OutputDir = OutputDir;
-            this.SourceName = SourceName;
-            this.LogName = LogName;
-            this.ThumbnailSize = ThumbnailSize;
+            Data = new ObservableCollection<DataMember>();
+            Data.Add(new DataMember("OutputDir", OutputDir));
+            Data.Add(new DataMember("SourceName", SourceName));
+            Data.Add(new DataMember("LogName", LogName));
+            Data.Add(new DataMember("ThumbnailSize", ThumbnailSize.ToString()));
+        }
+
+        public void Set(ConfigData config)
+        {
+            foreach (string handler in config.Handler)
+            {
+                this.Handler.Add(handler);
+            }
+
+            Data.Clear();
+            foreach (DataMember data in config.Data)
+            {
+                this.Data.Add(data);
+            }
         }
 
         private readonly object handlersLock;
+        private readonly object dataLock;
 
         private ObservableCollection<string> _handlers;
+        private ObservableCollection<DataMember> _data;
 
         public ObservableCollection<string> Handler
         {
@@ -39,11 +57,19 @@ namespace Image_Backuper_GUI.Config
                 BindingOperations.EnableCollectionSynchronization(_handlers, handlersLock);
             }
         }
-        
-        public string OutputDir { get; set; }
-        public string SourceName { get; set; }
-        public string LogName { get; set; }
-        public int ThumbnailSize { get; set; }
+
+        public ObservableCollection<DataMember> Data
+        {
+            get
+            {
+                return _data;
+            }
+            set
+            {
+                _data = value;
+                BindingOperations.EnableCollectionSynchronization(_data, dataLock);
+            }
+        }
 
         public static ConfigData FromJSON(string str)
         {

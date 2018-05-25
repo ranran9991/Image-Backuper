@@ -12,7 +12,8 @@ namespace Image_Backuper_GUI.Command
         CloseCommand,
         HandlerRemoveCommand,
         ConfigCommand,
-        LogCommand,
+        LogChangedCommand,
+        LogHistoryCommand,
         CloseClientCommand
     }
 }

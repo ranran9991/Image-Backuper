@@ -20,10 +20,10 @@ namespace Image_Backuper_GUI.Model
         {
             client = GUIClient.Instance;
             logsLock = new object();
-            try { logs = new ObservableCollection<MessageRecievedEventArgs>(client.GetLogs()); }
-            catch { }
-            client.CommandReceived += AddLog;
+            logs = new ObservableCollection<MessageRecievedEventArgs>();
+            client.CommandReceived += HandleCommand;
             client.Register();
+            client.SendCommand(new CommandRecievedEventArgs((int)CommandEnum.LogHistoryCommand, null, ""));
         }
 
         private readonly object logsLock;
@@ -43,11 +43,23 @@ namespace Image_Backuper_GUI.Model
             }
         }
 
-        public void AddLog(object sender, CommandRecievedEventArgs e)
+        public void HandleCommand(object sender, CommandRecievedEventArgs e)
         {
-            if (e.CommandID == (int)CommandEnum.LogCommand)
+            if (e.CommandID == (int)CommandEnum.LogChangedCommand)
             {
-                logs.Add(MessageRecievedEventArgs.FromJSON(e.Args[0]));
+                logs.Insert(0, MessageRecievedEventArgs.FromJSON(e.Args[0]));
+                return;
+            }
+
+            if (e.CommandID == (int)CommandEnum.LogHistoryCommand)
+            {
+                try
+                {
+                    foreach (MessageRecievedEventArgs log in MessageRecievedEventArgs.LogFromJSON(e.Args[0])) { 
+                        logs.Insert(0, log);
+                    }
+                }
+                catch { }
             }
         }
     }

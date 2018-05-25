@@ -1,4 +1,5 @@
-﻿using Image_Backuper_GUI.Model;
+﻿using Image_Backuper_GUI.Config;
+using Image_Backuper_GUI.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -23,7 +24,7 @@ namespace Image_Backuper_GUI.ViewModel
             get { return model.config.Handler; }
         }
 
-        public string OutputDir
+        /*public string OutputDir
         {
             get { return model.config.OutputDir; }
         }
@@ -41,6 +42,11 @@ namespace Image_Backuper_GUI.ViewModel
         public int ThumbnailSize
         {
             get { return model.config.ThumbnailSize; }
+        }*/
+
+        public ObservableCollection<DataMember> data
+        {
+            get { return model.config.Data; }
         }
 
         public void DeleteHandler(string dir)

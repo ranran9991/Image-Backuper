@@ -64,6 +64,7 @@
     <Compile Include="Command\CommandEnum.cs" />
     <Compile Include="Command\CommandRecievedEventArgs.cs" />
     <Compile Include="Config\ConfigData.cs" />
+    <Compile Include="Config\DataMember.cs" />
     <Compile Include="Message\MessageRecievedEventArgs.cs" />
     <Compile Include="Message\MessageTypeEnum.cs" />
     <Compile Include="Model\LogsModel.cs" />

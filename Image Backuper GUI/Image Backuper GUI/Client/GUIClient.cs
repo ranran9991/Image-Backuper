@@ -55,28 +55,6 @@ namespace Image_Backuper_GUI.Client
 
         public event EventHandler<CommandRecievedEventArgs> CommandReceived;
 
-        public List<MessageRecievedEventArgs> GetLogs()
-        {
-            Console.WriteLine("Getting Logs\n");
-            if (!client.Connected) return null;
-            CommandRecievedEventArgs command = new CommandRecievedEventArgs((int)CommandEnum.LogCommand, null, "");
-            string Jcommand = command.ToJSON();
-            writer.Write(Jcommand);
-            string JLogs = reader.ReadString();
-            return MessageRecievedEventArgs.LogFromJSON(JLogs);
-        }
-
-        public ConfigData GetConfig()
-        {
-            Console.WriteLine("Getting config\n");
-            if (!client.Connected) return new ConfigData(null, "", "", "", 0);
-            CommandRecievedEventArgs command = new CommandRecievedEventArgs((int)CommandEnum.ConfigCommand, null, "");
-            string Jcommand = command.ToJSON();
-            writer.Write(Jcommand);
-            string JConfig = reader.ReadString();
-            return ConfigData.FromJSON(JConfig);
-        }
-
         private int countModels;
 
         public void Register()
@@ -89,7 +67,11 @@ namespace Image_Backuper_GUI.Client
                     {
                         string JCommand = reader.ReadString();
                         CommandRecievedEventArgs command = CommandRecievedEventArgs.FromJSON(JCommand);
-                        if (command.CommandID == (int)CommandEnum.CloseCommand) break;
+                        if (command.CommandID == (int)CommandEnum.CloseCommand)
+                        {
+                            client.Close();
+                            break;
+                        }
                         CommandReceived?.Invoke(this, command);
                     }
                 }
@@ -100,7 +82,10 @@ namespace Image_Backuper_GUI.Client
 
         public void SendCommand(CommandRecievedEventArgs command)
         {
-            writer.Write(command.ToJSON());
+            if (client.Connected)
+            {
+                writer.Write(command.ToJSON());
+            }
         }
 
         ~GUIClient()

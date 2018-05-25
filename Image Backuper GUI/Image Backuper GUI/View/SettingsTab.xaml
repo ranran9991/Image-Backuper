@@ -10,26 +10,12 @@
         VerticalAlignment="Center">
     <StackPanel Margin="3">
         <TextBlock Margin="3" Foreground="Blue" FontSize="30" HorizontalAlignment="Center" FontWeight="Bold"> Settings</TextBlock>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Label Grid.Row="0" Grid.Column="0" Margin="3" VerticalAlignment="Center" FontWeight="Bold">Output Directory:</Label>
-            <TextBlock Grid.Row="0" Grid.Column="1" Margin="3"  VerticalAlignment="Center" Text="{Binding OutputDir}"></TextBlock>
-            <Label Grid.Row="1" Grid.Column="0" Margin="3" VerticalAlignment="Center" FontWeight="Bold">Source Name:</Label>
-            <TextBlock Grid.Row="1" Grid.Column="1" Margin="3"  VerticalAlignment="Center" Text="{Binding SourceName}"></TextBlock>
-            <Label Grid.Row="2" Grid.Column="0" Margin="3" VerticalAlignment="Center" FontWeight="Bold">Log Name:</Label>
-            <TextBlock Grid.Row="2" Grid.Column="1" Margin="3"  VerticalAlignment="Center" Text="{Binding LogName}"></TextBlock>
-            <Label Grid.Row="3" Grid.Column="0" Margin="3" VerticalAlignment="Center" FontWeight="Bold">Thumbnail Size:</Label>
-            <TextBlock Grid.Row="3" Grid.Column="1" Margin="3"  VerticalAlignment="Center" Text="{Binding ThumbnailSize}"></TextBlock>
-        </Grid>
+        <DataGrid HeadersVisibility="None" MinRowHeight="30" ItemsSource="{Binding data}" AutoGenerateColumns="False" IsReadOnly="True" VerticalAlignment="Center">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=key}" />
+                <DataGridTextColumn Binding="{Binding Path=value}" />
+            </DataGrid.Columns>
+        </DataGrid>
         <Button Content="Remove" 
                 Name="remove" 
                 Height="30" 

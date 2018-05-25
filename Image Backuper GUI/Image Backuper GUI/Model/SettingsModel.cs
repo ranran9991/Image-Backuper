@@ -16,18 +16,25 @@ namespace Image_Backuper_GUI.Model
         public SettingsModel()
         {
             client = GUIClient.Instance;
-            config = client.GetConfig();
-            client.CommandReceived += RemoveHandler;
+            config = new ConfigData(new List<string>(), "", "", "", 0);
+            client.CommandReceived += HandleCommand;
             client.Register();
+            client.SendCommand(new CommandRecievedEventArgs((int)CommandEnum.ConfigCommand, null, ""));
         }
 
         public ConfigData config { get; set; }
 
-        public void RemoveHandler(object sender, CommandRecievedEventArgs e)
+        public void HandleCommand(object sender, CommandRecievedEventArgs e)
         {
             if (e.CommandID == (int)CommandEnum.HandlerRemoveCommand)
             {
                 config.Handler.Remove(e.RequestDirPath);
+                return;
+            }
+
+            if (e.CommandID == (int)CommandEnum.ConfigCommand)
+            {
+                config.Set(ConfigData.FromJSON(e.Args[0]));
             }
         }
 
