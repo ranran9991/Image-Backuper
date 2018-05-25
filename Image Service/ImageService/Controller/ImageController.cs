@@ -80,10 +80,11 @@ namespace ImageService.Controller
                 BinaryWriter writer = new BinaryWriter(stream, Encoding.UTF8, true);
                 while (true)
                 {
-                    string commandLine = reader.ReadString();
-                    m_log.Log("Got message from client: " + commandLine, MessageTypeEnum.INFO);
                     try
                     {
+                        string commandLine = reader.ReadString();
+                        m_log.Log("Got message from client: " + commandLine, MessageTypeEnum.INFO);
+                   
                         CommandRecievedEventArgs cmdArgs = CommandRecievedEventArgs.FromJSON(commandLine.ToString());
                         if (cmdArgs.CommandID == (int)CommandEnum.CloseClientCommand)
                         {
@@ -111,8 +112,7 @@ namespace ImageService.Controller
                         reader.Close();
                         return;
                     }
-                    writer.Close();
-                    reader.Close();
+              
                 }
             });
             task.Start();

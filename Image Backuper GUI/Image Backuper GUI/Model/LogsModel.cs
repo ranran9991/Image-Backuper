@@ -23,7 +23,7 @@ namespace Image_Backuper_GUI.Model
             logs = new ObservableCollection<MessageRecievedEventArgs>();
             client.CommandReceived += HandleCommand;
             client.Register();
-            client.SendCommand(new CommandRecievedEventArgs((int)CommandEnum.LogHistoryCommand, null, ""));
+            client.SendCommand(new CommandRecievedEventArgs((int)CommandEnum.LogHistoryCommand, null, null));
         }
 
         private readonly object logsLock;
@@ -51,7 +51,7 @@ namespace Image_Backuper_GUI.Model
                 return;
             }
 
-            if (e.CommandID == (int)CommandEnum.LogHistoryCommand)
+            else if (e.CommandID == (int)CommandEnum.LogHistoryCommand)
             {
                 try
                 {

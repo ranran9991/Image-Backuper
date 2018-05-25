@@ -11,6 +11,7 @@ using Image_Backuper_GUI.Message;
 using Image_Backuper_GUI.Command;
 using System.Runtime.Serialization.Json;
 using Image_Backuper_GUI.Config;
+using System.Threading;
 
 namespace Image_Backuper_GUI.Client
 {
@@ -31,8 +32,8 @@ namespace Image_Backuper_GUI.Client
                 return;
             }
             NetworkStream stream = client.GetStream();
-            reader = new BinaryReader(stream);
-            writer = new BinaryWriter(stream);
+            reader = new BinaryReader(stream, Encoding.UTF8, true);
+            writer = new BinaryWriter(stream, Encoding.UTF8, true);
         }
 
         public static GUIClient Instance
@@ -59,20 +60,24 @@ namespace Image_Backuper_GUI.Client
 
         public void Register()
         {
+            
             if (++countModels == 2 && client.Connected)
             {
                 Task t = new Task( () => 
                 {
+                    Mutex mut = new Mutex();
                     while (true)
                     {
                         string JCommand = reader.ReadString();
                         CommandRecievedEventArgs command = CommandRecievedEventArgs.FromJSON(JCommand);
-                        if (command.CommandID == (int)CommandEnum.CloseCommand)
+                        if (command.CommandID == (int)CommandEnum.CloseClientCommand)
                         {
                             client.Close();
                             break;
                         }
+                        mut.WaitOne();
                         CommandReceived?.Invoke(this, command);
+                        mut.ReleaseMutex();
                     }
                 }
                 );
@@ -84,7 +89,9 @@ namespace Image_Backuper_GUI.Client
         {
             if (client.Connected)
             {
+                
                 writer.Write(command.ToJSON());
+               
             }
         }
 
