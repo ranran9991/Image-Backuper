@@ -37,7 +37,7 @@ namespace ImageService.Server
         }
         public void RaiseNotifiyEvent(CommandRecievedEventArgs args)
         {
-            ImageServer.NotifyHandlerRemoved?.Invoke(args);
+            NotifyHandlerRemoved?.Invoke(args);
         }
         /// <summary>
         /// Creates handler for a given directory path
@@ -89,7 +89,9 @@ namespace ImageService.Server
         {
             pathList.Remove(path);
             CommandRecievedEventArgs cmdRecieved = new CommandRecievedEventArgs((int)CommandEnum.CloseCommand, null, path);
-            NotifyHandlerRemoved?.Invoke(cmdRecieved);
+            CommandRecieved?.Invoke(this, cmdRecieved);
+            m_logger.Log(DateTime.Now.ToString() + " Closing handler at path " + path, MessageTypeEnum.INFO);
+
         }
 
     }

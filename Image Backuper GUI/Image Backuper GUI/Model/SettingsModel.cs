@@ -28,7 +28,7 @@ namespace Image_Backuper_GUI.Model
         {
             if (e.CommandID == (int)CommandEnum.HandlerRemoveCommand)
             {
-                config.Handler.Remove(e.RequestDirPath);
+                config.Handler.Remove(e.Args[0]);
                 return;
             }
 
@@ -40,7 +40,8 @@ namespace Image_Backuper_GUI.Model
 
         public void DeleteHandler(string dir)
         {
-            client.SendCommand(new CommandRecievedEventArgs((int)CommandEnum.HandlerRemoveCommand, null, dir));
+            string[] args = { dir };
+            client.SendCommand(new CommandRecievedEventArgs((int)CommandEnum.HandlerRemoveCommand, args, null));
         }
     }
 }

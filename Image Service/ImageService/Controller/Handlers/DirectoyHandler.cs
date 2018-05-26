@@ -129,7 +129,6 @@ namespace ImageService.Controller.Handlers
             foreach (FileSystemWatcher watcher in watchers)
             {
                 watcher.EnableRaisingEvents = false;
-                m_logging.Log(DateTime.Now.ToString() + " Handler Stopped Watching In Directory " + m_path, MessageTypeEnum.INFO);
             }
         }
     }

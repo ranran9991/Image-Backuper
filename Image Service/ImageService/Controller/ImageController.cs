@@ -83,8 +83,7 @@ namespace ImageService.Controller
                     try
                     {
                         string commandLine = reader.ReadString();
-                        m_log.Log("Got message from client: " + commandLine, MessageTypeEnum.INFO);
-                   
+                        
                         CommandRecievedEventArgs cmdArgs = CommandRecievedEventArgs.FromJSON(commandLine.ToString());
                         if (cmdArgs.CommandID == (int)CommandEnum.CloseClientCommand)
                         {
@@ -100,7 +99,7 @@ namespace ImageService.Controller
                     }
                     catch (JsonException)
                     {
-                        m_log.Log(DateTime.Now.ToString() + " JSON Caught Exception in client", MessageTypeEnum.WARNING);
+                        m_log.Log(DateTime.Now.ToString() + " Caught JSON Exception in client", MessageTypeEnum.WARNING);
                         writer.Close();
                         reader.Close();
                         return;

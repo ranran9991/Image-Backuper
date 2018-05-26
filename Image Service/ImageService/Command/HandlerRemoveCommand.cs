@@ -20,9 +20,10 @@ namespace Image_Service.ImageService.Command
         }
         public string Execute(string[] args, out bool result)
         {
+
             string path = args[0];
             server.closeSpecificHandler(path);
-            CommandRecievedEventArgs cmndRecieved = new CommandRecievedEventArgs((int)CommandEnum.HandlerRemoveCommand, null, path);
+            CommandRecievedEventArgs cmndRecieved = new CommandRecievedEventArgs((int)CommandEnum.HandlerRemoveCommand, args, null);
             server.RaiseNotifiyEvent(cmndRecieved);
             result = true;
             return cmndRecieved.ToJSON();
