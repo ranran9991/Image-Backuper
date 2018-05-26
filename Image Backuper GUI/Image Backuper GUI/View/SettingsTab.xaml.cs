@@ -1,6 +1,7 @@
 ﻿using Image_Backuper_GUI.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,22 +24,7 @@ namespace Image_Backuper_GUI.View
         public SettingsTab()
         {
             InitializeComponent();
-            viewModel = new SettingsViewModel();
-            DataContext = viewModel;
-        }
-
-        private SettingsViewModel viewModel { get; set; }
-
-        private void ListGotFocus(object sender, RoutedEventArgs e)
-        {
-            remove.IsEnabled = true;
-        }
-
-        private void removeClick(object sender, RoutedEventArgs e)
-        {
-            viewModel.DeleteHandler((string)dirList.SelectedValue);
-            remove.IsEnabled = false;
-            dirList.SelectedIndex = -1;
+            DataContext = new SettingsViewModel();
         }
     }
 }

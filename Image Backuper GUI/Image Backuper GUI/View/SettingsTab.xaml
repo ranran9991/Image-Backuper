@@ -19,17 +19,15 @@
         <Button Content="Remove" 
                 Name="remove" 
                 Height="30" 
-                IsEnabled="False" 
-                Click="removeClick"/>
-        <ListBox SelectedIndex="-1"
+                Command="{Binding RemoveCommand}"/>
+        <ListBox SelectedIndex="{Binding handlerIndex, Mode=TwoWay}"
                  SelectionMode="Single" 
                  Name="dirList" 
                  ItemsSource="{Binding directoryList}" 
                  ScrollViewer.CanContentScroll="True" 
                  ScrollViewer.IsDeferredScrollingEnabled="True" 
                  ScrollViewer.VerticalScrollBarVisibility="Visible" 
-                 MaxHeight="180" 
-                 GotFocus="ListGotFocus">
+                 MaxHeight="180">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
