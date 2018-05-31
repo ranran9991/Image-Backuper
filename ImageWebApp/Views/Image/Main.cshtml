@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "Main";
+}
+
+<h2>Image Web</h2>
+
+<table class="table table-condensed-sm" id="details">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>ID</th>
+        </tr>
+    </thead>
+</table>
+
+<script>
+    $.post("@Url.Action("GetDetails")", function (data) {
+        $('#details').append('<tbody>');
+        $('#details').append('<tr><td>' + data.First.FirstName + ' </td><td>' + data.First.LastName + '</td><td>' + data.First.ID + '</td></tr>')
+        $('#details').append('<tr><td>' + data.Second.FirstName + '</td><td>' + data.Second.LastName + '</td><td>' + data.Second.ID + '</td></tr>');
+        $('#details').append('</tbody>');
+    }, "json");
+
+    
+</script>

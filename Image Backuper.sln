@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpBasicClientTest", "TcpBa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server Demo", "Server Demo\ConsoleApplication3\Server Demo.csproj", "{40596977-2A79-4FE5-8877-A27D8D7C6D80}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageWebApp", "ImageWebApp\ImageWebApp.csproj", "{4A0C2576-A3D2-4E32-9CC4-8F97634FC622}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{40596977-2A79-4FE5-8877-A27D8D7C6D80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40596977-2A79-4FE5-8877-A27D8D7C6D80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40596977-2A79-4FE5-8877-A27D8D7C6D80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A0C2576-A3D2-4E32-9CC4-8F97634FC622}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A0C2576-A3D2-4E32-9CC4-8F97634FC622}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A0C2576-A3D2-4E32-9CC4-8F97634FC622}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A0C2576-A3D2-4E32-9CC4-8F97634FC622}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
