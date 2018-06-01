@@ -1,5 +1,5 @@
 ﻿using ImageService.Commands;
-using ImageService.Infrastructure.Enums;
+using Infrastructure;
 using ImageService.Model;
 using ImageService.Server;
 using System;

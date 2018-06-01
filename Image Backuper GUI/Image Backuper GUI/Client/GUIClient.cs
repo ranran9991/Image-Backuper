@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
 using Image_Backuper_GUI.Message;
-using Image_Backuper_GUI.Command;
+using Infrastructure;
 using System.Runtime.Serialization.Json;
 using Image_Backuper_GUI.Config;
 using System.Threading;

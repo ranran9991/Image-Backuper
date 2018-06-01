@@ -1,6 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json.Linq;
-namespace ImageService.Model
+
+namespace Infrastructure
 {
     public class CommandRecievedEventArgs : EventArgs
     {

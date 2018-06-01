@@ -66,8 +66,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Client\GUIClient.cs" />
-    <Compile Include="Command\CommandEnum.cs" />
-    <Compile Include="Command\CommandRecievedEventArgs.cs" />
     <Compile Include="Config\ConfigData.cs" />
     <Compile Include="Config\DataMember.cs" />
     <Compile Include="Message\MessageRecievedEventArgs.cs" />
@@ -133,7 +131,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\Infrastructure.csproj">
+      <Project>{61412b12-dd8e-47dc-96da-81dd998e4167}</Project>
+      <Name>Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using ImageWebApp.Models;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,7 +19,15 @@ namespace ImageWebApp.Controllers
 
         public ActionResult Config()
         {
-            return View();
+            Config config = new Config
+            {
+                OutputDir = "OutputDir test",
+                SourceName = "SourceName test",
+                LogName = "LogName test",
+                ThumbnailSize = 120
+            };
+
+            return View(config);
         }
         public ActionResult Log()
         {

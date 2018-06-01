@@ -14,3 +14,13 @@ C:\Users\Guest\Documents\Visual Studio 2015\Projects\Server Demo\ConsoleApplicat
 C:\Users\Guest\Documents\Visual Studio 2015\Projects\Server Demo\ConsoleApplication3\bin\Debug\ConsoleApplication3.pdb
 C:\Users\Guest\Documents\Visual Studio 2015\Projects\Server Demo\ConsoleApplication3\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Guest\Documents\Visual Studio 2015\Projects\Server Demo\ConsoleApplication3\bin\Debug\Newtonsoft.Json.xml
+C:\Users\ranran9991\source\repos\Image Backuper\Server Demo\ConsoleApplication3\bin\Debug\ConsoleApplication3.exe.config
+C:\Users\ranran9991\source\repos\Image Backuper\Server Demo\ConsoleApplication3\bin\Debug\ConsoleApplication3.exe
+C:\Users\ranran9991\source\repos\Image Backuper\Server Demo\ConsoleApplication3\bin\Debug\ConsoleApplication3.pdb
+C:\Users\ranran9991\source\repos\Image Backuper\Server Demo\ConsoleApplication3\bin\Debug\Newtonsoft.Json.dll
+C:\Users\ranran9991\source\repos\Image Backuper\Server Demo\ConsoleApplication3\bin\Debug\Newtonsoft.Json.xml
+C:\Users\ranran9991\source\repos\Image Backuper\Server Demo\ConsoleApplication3\obj\Debug\Server Demo.csprojAssemblyReference.cache
+C:\Users\ranran9991\source\repos\Image Backuper\Server Demo\ConsoleApplication3\obj\Debug\Server Demo.csproj.CoreCompileInputs.cache
+C:\Users\ranran9991\source\repos\Image Backuper\Server Demo\ConsoleApplication3\obj\Debug\Server Demo.csproj.CopyComplete
+C:\Users\ranran9991\source\repos\Image Backuper\Server Demo\ConsoleApplication3\obj\Debug\ConsoleApplication3.exe
+C:\Users\ranran9991\source\repos\Image Backuper\Server Demo\ConsoleApplication3\obj\Debug\ConsoleApplication3.pdb

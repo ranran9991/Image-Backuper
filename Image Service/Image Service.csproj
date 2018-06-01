@@ -51,7 +51,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ImageService.Infrastructure\Enums\CommandEnum.cs" />
     <Compile Include="ImageService\Command\CloseCommand.cs" />
     <Compile Include="ImageService\Command\ConfigCommand.cs" />
     <Compile Include="ImageService\Command\HandlerRemoveCommand.cs" />
@@ -72,7 +71,6 @@
     <Compile Include="ImageService.Logging\LoggingModel.cs" />
     <Compile Include="ImageService.Logging\Model\MessageRecievedEventArgs.cs" />
     <Compile Include="ImageService.Logging\Model\MessageTypeEnum.cs" />
-    <Compile Include="ImageService\Model\Event\CommandRecievedEventArgs.cs" />
     <Compile Include="ImageService\Model\Event\DirectoryCloseEventArgs.cs" />
     <Compile Include="ImageService\Model\IImageServiceModel.cs" />
     <Compile Include="ImageService\Model\ImageServiceModel.cs" />
@@ -101,6 +99,14 @@
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ImageService.Infrastructure\Enums\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
+      <Project>{61412B12-DD8E-47DC-96DA-81DD998E4167}</Project>
+      <Name>Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

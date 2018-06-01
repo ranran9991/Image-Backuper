@@ -1,4 +1,4 @@
-﻿using ImageService.Infrastructure.Enums;
+﻿using Infrastructure;
 using ImageService.Model;
 using Newtonsoft.Json.Linq;
 using System;
