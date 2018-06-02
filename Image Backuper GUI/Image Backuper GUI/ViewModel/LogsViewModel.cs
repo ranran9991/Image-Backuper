@@ -1,11 +1,11 @@
-﻿using Image_Backuper_GUI.Message;
-using Image_Backuper_GUI.Model;
+﻿using Image_Backuper_GUI.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Infrastructure;
 
 namespace Image_Backuper_GUI.ViewModel
 {

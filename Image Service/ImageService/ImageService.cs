@@ -15,7 +15,7 @@ using ImageService.Model;
 using ImageService.Controller;
 using System.IO;
 using Image_Service.ImageService.Server;
-
+using Infrastructure;
 public enum ServiceState
 {
     SERVICE_STOPPED = 0x00000001,

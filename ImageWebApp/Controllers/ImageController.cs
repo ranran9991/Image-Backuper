@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Infrastructure; 
 
 namespace ImageWebApp.Controllers
 {
@@ -31,7 +32,12 @@ namespace ImageWebApp.Controllers
         }
         public ActionResult Log()
         {
-            return View();
+            Log log = new Log();
+            log.log = new List<MessageRecievedEventArgs>{
+                new MessageRecievedEventArgs("Hello", MessageTypeEnum.INFO),
+                new MessageRecievedEventArgs("GoodBye", MessageTypeEnum.FAIL)
+            };
+            return View(log);
         }
         public ActionResult Image()
         {

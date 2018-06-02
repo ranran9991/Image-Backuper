@@ -68,8 +68,6 @@
     <Compile Include="Client\GUIClient.cs" />
     <Compile Include="Config\ConfigData.cs" />
     <Compile Include="Config\DataMember.cs" />
-    <Compile Include="Message\MessageRecievedEventArgs.cs" />
-    <Compile Include="Message\MessageTypeEnum.cs" />
     <Compile Include="Model\LogsModel.cs" />
     <Compile Include="Model\MainModel.cs" />
     <Compile Include="Model\SettingsModel.cs" />

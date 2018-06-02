@@ -69,8 +69,6 @@
     </Compile>
     <Compile Include="ImageService.Logging\ILoggingModel.cs" />
     <Compile Include="ImageService.Logging\LoggingModel.cs" />
-    <Compile Include="ImageService.Logging\Model\MessageRecievedEventArgs.cs" />
-    <Compile Include="ImageService.Logging\Model\MessageTypeEnum.cs" />
     <Compile Include="ImageService\Model\Event\DirectoryCloseEventArgs.cs" />
     <Compile Include="ImageService\Model\IImageServiceModel.cs" />
     <Compile Include="ImageService\Model\ImageServiceModel.cs" />
@@ -87,7 +85,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ImageService\App.config" />
+    <None Include="ImageService\App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

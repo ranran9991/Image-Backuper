@@ -1,7 +1,44 @@
-﻿
+﻿@using ImageWebApp.Models
+@using Infrastructure
+@model Log
 @{
     ViewBag.Title = "Log";
 }
 
 <h2>Log</h2>
+
+<select class="form-control" id="statusSelect">
+    <option id="ALL" selected="selected">ALL</option>
+    <option id="INFO">INFO</option>
+    <option id="WARNING">WARNING</option>
+    <option id="FAIL">FAIL</option>
+</select>
+
+<button onclick="sort_onclick()">Sort</button>
+
+<ul class="list-group" id="loglist">
+    @{
+        foreach (MessageRecievedEventArgs e in Model.log)
+        {
+            <li class="list-group-item @e.Status">@e.Message</li>
+        }
+    }
+</ul>
+
+
+<script>
+    function sort_onclick() {
+        var select = document.getElementById("statusSelect");
+        var status = select.options[select.selectedIndex].value;
+        if (status == "ALL") {
+            $("li").show();
+            return;
+        }
+        else {
+            $("li").hide();
+            $("." + status).show();
+        }
+    }
+</script>
+
 

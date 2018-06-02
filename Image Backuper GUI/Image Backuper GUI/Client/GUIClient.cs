@@ -7,7 +7,6 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
-using Image_Backuper_GUI.Message;
 using Infrastructure;
 using System.Runtime.Serialization.Json;
 using Image_Backuper_GUI.Config;
