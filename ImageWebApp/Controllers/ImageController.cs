@@ -12,6 +12,7 @@ namespace ImageWebApp.Controllers
 {
     public class ImageController : Controller
     {
+        public static ImageModel imageModel = new ImageModel();
         // GET: Image
         public ActionResult Main()
         {
@@ -37,6 +38,7 @@ namespace ImageWebApp.Controllers
                 new MessageRecievedEventArgs("Hello", MessageTypeEnum.INFO),
                 new MessageRecievedEventArgs("GoodBye", MessageTypeEnum.FAIL)
             };
+
             return View(log);
         }
         public ActionResult Image()
@@ -74,5 +76,25 @@ namespace ImageWebApp.Controllers
 
             return detailsJson;
         }
+
+        [HttpPost]
+        public JObject GetThumbnails()
+        {
+            JObject obj = JObject.Parse(imageModel.ThumbnailsToJSON());
+            return obj;
+        }
+
+        [HttpPost]
+        public string GetRealImagePath(string thumbPath)
+        {
+            return imageModel.GetRealImagePath(thumbPath);
+        }
+
+        [HttpPost]
+        public void RemovePicture(string thumbPath)
+        {
+            imageModel.RemovePicture(thumbPath);
+        }
     }
+
 }

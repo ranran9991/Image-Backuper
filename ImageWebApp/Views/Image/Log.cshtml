@@ -6,15 +6,21 @@
 }
 
 <h2>Log</h2>
-
-<select class="form-control" id="statusSelect">
-    <option id="ALL" selected="selected">ALL</option>
-    <option id="INFO">INFO</option>
-    <option id="WARNING">WARNING</option>
-    <option id="FAIL">FAIL</option>
-</select>
-
-<button onclick="sort_onclick()">Sort</button>
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <select class="form-control" id="statusSelect">
+                <option id="ALL" selected="selected">ALL</option>
+                <option id="INFO">INFO</option>
+                <option id="WARNING">WARNING</option>
+                <option id="FAIL">FAIL</option>
+            </select>
+        </div>
+        <div class="col-sm">
+            <button onclick="sort_onclick()" class="btn-default">Sort</button>
+        </div>
+    </div>
+</div>
 
 <ul class="list-group" id="loglist">
     @{

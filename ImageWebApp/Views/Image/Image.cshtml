@@ -4,4 +4,83 @@
 }
 
 <h2>Image</h2>
+<hr />
+<!--Image Gallery-->
+<div id="img_gallery" class="container" ></div>
+<!--Pop up window-->
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
 
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Image options</h4>
+            </div>
+
+            <!-- Modal body -->
+            <div id="modal_body" class="modal-body">
+                <img src=" ">
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="modal_remove_btn" class="btn btn-danger">Delete</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    function btn_on_view(path) {
+        // parsing for real path
+        var URLsplit = path.split("/");
+        var realPath = path.replace(URLsplit[0] + "//" + URLsplit[2] + "//", '');
+        var imagePath = "";
+
+        $("#modal_body").children("img").remove();
+        $.post('@Url.Action("GetRealImagePath")', { thumbPath : realPath }, function (data) {
+            imagePath = data;
+            $(".modal-body").children().remove("img");  
+            $(".modal-body").append('<img style="max-width: 100%;" src="' + imagePath + '">');
+            imagePath = imagePath.replace(/\\/g, "\\\\");
+            $("#modal_remove_btn").attr('onclick', 'btn_on_delete("' + imagePath + '") ');
+            $("#myModal").modal('show');
+        });
+    }
+
+    function btn_on_delete(path) {
+        var ans = confirm("Are you sure you want to remove image at path: " + path);
+        if (ans == false) {
+            return;
+        }
+        $.post('@Url.Action("RemovePicture")', { thumbPath: path });
+        location.reload();
+    }
+    $.post('@Url.Action("GetThumbnails")', {}, function (data) {
+        // number of rows
+        var rows = Math.floor(data.Thumbnails.length / 4);
+        // create rows
+        for (var i = 0; i <= rows; i++) {
+            $("#img_gallery").append("<div id=\"" + i + "\" class=\"row\"></div>");
+        }
+        // puts images into rows
+        for (i in data.Thumbnails) {
+            var row = Math.floor(i / 4);
+            $("#" + row).append(
+                "<div class=\"col-md-3\">" +
+                    "<div class=\"thumbnail\">" + 
+                        "<img class=\"rounded-circle img-fluid\" src=" +
+                            data.Thumbnails[i].Path + " width=100%>" + 
+                            "<div class=\"caption\">" +
+                                "<h4>" + data.Thumbnails[i].Name + "</h4>" +
+                                "<p>" + "Month: " + data.Thumbnails[i].Month + "<br>" + "Year: " + data.Thumbnails[i].Year + "</p>" +
+                                '<button class="btn-primary" onclick=btn_on_view("' + data.Thumbnails[i].Path.replace(/\\/g, "\\\\") + '");>View</button>' + 
+                                '<button class="btn-danger" onclick=btn_on_delete("' + data.Thumbnails[i].Path.replace(/\\/g, "\\\\") + '");>Delete</button>' +
+                            "</div>" + 
+                    "</div>" + 
+                "</div >"
+            );
+        }
+    }, "json");
+</script>
