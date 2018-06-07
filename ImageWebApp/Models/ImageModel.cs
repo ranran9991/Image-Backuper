@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using ImageWebApp.Client;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -25,7 +26,11 @@ namespace ImageWebApp.Models
             // i left it here for your use
 
             thumbnails = GetThumbnails();
+            client = WebClient.Instance;
         }
+
+        private WebClient client { get; set; }
+
         public string ThumbnailsToJSON()
         {
             JObject thumbList = new JObject();
@@ -43,7 +48,7 @@ namespace ImageWebApp.Models
         public List<Thumbnail> GetThumbnails()
         {
             List<Thumbnail> thumbs = new List<Thumbnail>();
-            string outputDir = ConfigurationManager.AppSettings["OutputDir"];
+            string outputDir = client.config.OutputDir;
             string thumbDirPath = outputDir + "\\Thumbnails";
             Console.WriteLine(thumbDirPath);
 
@@ -81,7 +86,7 @@ namespace ImageWebApp.Models
             {
                 if (thumb.Path == thumbPath)
                 {
-                    return ConfigurationManager.AppSettings["OutputDir"] + "\\" + thumb.Year +
+                    return client.config.OutputDir + "\\" + thumb.Year +
                         "\\" + thumb.Month + "\\" + thumb.Name;
                 }
             }
