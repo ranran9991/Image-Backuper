@@ -35,10 +35,9 @@ namespace ImageWebApp.Client
             writer = new BinaryWriter(stream, Encoding.UTF8, true);
             config = new Config("", "", "", 0);
             logs = new Log();
-            handlers = new List<string>();
             GetCommands();
-            SendCommand(new CommandRecievedEventArgs((int)CommandEnum.LogHistoryCommand, new string[] { }, null));
-            SendCommand(new CommandRecievedEventArgs((int)CommandEnum.ConfigCommand, new string[] { }, ""));
+            SendCommand(new CommandRecievedEventArgs((int)CommandEnum.LogHistoryCommand, null, null));
+            SendCommand(new CommandRecievedEventArgs((int)CommandEnum.ConfigCommand, null, ""));
         }
 
         public static WebClient Instance
@@ -122,15 +121,16 @@ namespace ImageWebApp.Client
             }
         }
 
+        public void DeleteHandler(string dir)
+        {
+            string[] args = { dir };
+            SendCommand(new CommandRecievedEventArgs((int)CommandEnum.HandlerRemoveCommand, args, null));
+        }
+
         ~WebClient()
         {
             CommandRecievedEventArgs command = new CommandRecievedEventArgs((int)CommandEnum.CloseClientCommand, null, "");
             client.Close();
-        }
-
-        public void RemoveHandler(string path)
-        {
-            handlers.Clear();
         }
     }
 }
