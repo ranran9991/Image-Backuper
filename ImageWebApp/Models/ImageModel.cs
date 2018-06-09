@@ -11,7 +11,7 @@ namespace ImageWebApp.Models
 {
     public class ImageModel
     {
-        List<Thumbnail> thumbnails;
+        public List<Thumbnail> thumbnails;
 
         public ImageModel()
         {
@@ -25,8 +25,8 @@ namespace ImageWebApp.Models
             }; */
             // i left it here for your use
 
-            thumbnails = GetThumbnails();
             client = WebClient.Instance;
+            thumbnails = new List<Thumbnail>();
         }
 
         private WebClient client { get; set; }
@@ -71,6 +71,9 @@ namespace ImageWebApp.Models
                             int _month = int.Parse(month.Substring(year.Length + 1));
                             int _year = int.Parse(year.Substring(outputDir.Length + 1));
 
+                            string cwd = System.Web.HttpContext.Current.Server.MapPath("~");
+                            path = path.StartsWith(cwd) ? path.Substring(cwd.Length) : path;
+                            path = "\\" + path;
                             Thumbnail thumbnail = new Thumbnail(name, path, _month, _year);
                             thumbs.Add(thumbnail);
                         }
@@ -82,12 +85,17 @@ namespace ImageWebApp.Models
 
         public string GetRealImagePath(string thumbPath)
         {
+         
             foreach (Thumbnail thumb in thumbnails)
             {
                 if (thumb.Path == thumbPath)
                 {
-                    return client.config.OutputDir + "\\" + thumb.Year +
+                    string ret = client.config.OutputDir + "\\" + thumb.Year +
                         "\\" + thumb.Month + "\\" + thumb.Name;
+                    string cwd = System.Web.HttpContext.Current.Server.MapPath("~");
+                    ret = ret.StartsWith(cwd) ? ret.Substring(cwd.Length) : ret;
+                    ret = "\\" + ret;
+                    return ret;
                 }
             }
             return "";
@@ -97,6 +105,8 @@ namespace ImageWebApp.Models
         {
             string realImage = GetRealImagePath(path);
             if (realImage == "") return;
+            path = System.Web.HttpContext.Current.Server.MapPath("~") + path;
+            realImage = System.Web.HttpContext.Current.Server.MapPath("~") + realImage;
             File.Delete(path);
             File.Delete(realImage);
 

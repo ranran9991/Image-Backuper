@@ -56,7 +56,7 @@ namespace ImageService.Model
             Image image = Image.FromFile(imPath);
             Image thumb = image.GetThumbnailImage(m_thumbnailSize, m_thumbnailSize,
                                                  () => true, IntPtr.Zero);
-            string thumbnailDir = Path.Combine(m_OutputFolder, "thumbnails");
+            string thumbnailDir = Path.Combine(m_OutputFolder, "Thumbnails");
             if (!Directory.Exists(thumbnailDir))
             {
                 CreateDir(thumbnailDir, out result);

@@ -3,15 +3,73 @@
     ViewBag.Title = "Config";
 }
 
+
 <h2>Config</h2>
 <h2></h2>
+<table class="table">
+    <tr>
+        <th>
+            Output Directory
+        </th>
+        <th>
+            @Model.OutputDir
+        </th>
+    </tr>
+    <tr>
+        <th>
+            Source Name
+        </th>
+        <th>
+            @Model.SourceName
+        </th>
+    </tr>
+    <tr>
+        <th>
+            Log Name
+        </th>
+        <th>
+            @Model.LogName
+        </th>
+    </tr>
+    <tr>
+        <th>
+            Thumbnail Size
+        </th>
+        <th>
+            @Model.ThumbnailSize
+        </th>
+    </tr>
+</table>
 
-<p id="OutputDir">@Model.OutputDir</p>
-<p id="SourceName">@Model.SourceName</p>
-<p id="LogName">@Model.LogName</p>
-<p id="ThumbnailSize">@Model.ThumbnailSize</p>
 
+<select id="handlerList">
 
+</select>
+
+<button id="remove_btn" class="btn-danger" onclick="remove_handler()">Remove Handler</button>
 <script>
-
+    $(document).ready(function () {
+        $.post('@Url.Action("GetHandlers")', {}, function (data) {
+            // add options to select
+            for (i in data.Handlers) {
+                var option = '<option>' + data.Handlers[i] + '</option>';
+                $("#handlerList").append(option);
+            }
+        }, "json").fail(function () {
+            alert("error");
+            });
+    })
+    function remove_handler() {
+        $("#remove_btn").attr("disabled", true);
+        var remove_path = $("#handlerList :selected").text();
+        // send post to remove the handler
+        $.post('@Url.Action("RemoveHandler")', { path : remove_path }, function (data) {
+            alert(data);
+        }).fail(function () {
+            alert("fail");
+        })
+        $("#remove_btn").removeAttr("disabled");
+        location.reload(true);
+        }
+    
 </script>

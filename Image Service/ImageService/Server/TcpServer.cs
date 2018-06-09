@@ -74,11 +74,8 @@ namespace Image_Service.ImageService.Server
                     catch (SocketException)
                     {
                         logger.Log(DateTime.Now.ToString() + " Socket Exception ", MessageTypeEnum.FAIL);
-
-                        break;
                     }
                 }
-                logger.Log(DateTime.Now.ToString() + " server stopped", MessageTypeEnum.WARNING);
             });
             task.Start();
         }

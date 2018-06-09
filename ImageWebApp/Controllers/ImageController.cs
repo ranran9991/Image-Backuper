@@ -6,7 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Infrastructure; 
+using Infrastructure;
+using ImageWebApp.Client;
 
 namespace ImageWebApp.Controllers
 {
@@ -16,30 +17,17 @@ namespace ImageWebApp.Controllers
         // GET: Image
         public ActionResult Main()
         {
+            ViewBag.IsConnected = WebClient.Instance.connected;
             return View();
         }
 
         public ActionResult Config()
         {
-            Config config = new Config
-            {
-                OutputDir = "OutputDir test",
-                SourceName = "SourceName test",
-                LogName = "LogName test",
-                ThumbnailSize = 120
-            };
-
-            return View(config);
+            return View(WebClient.Instance.config);
         }
         public ActionResult Log()
-        {
-            Log log = new Log();
-            log.log = new List<MessageRecievedEventArgs>{
-                new MessageRecievedEventArgs("Hello", MessageTypeEnum.INFO),
-                new MessageRecievedEventArgs("GoodBye", MessageTypeEnum.FAIL)
-            };
-
-            return View(log);
+        {   
+            return View(WebClient.Instance.logs);
         }
         public ActionResult Image()
         {
@@ -80,6 +68,7 @@ namespace ImageWebApp.Controllers
         [HttpPost]
         public JObject GetThumbnails()
         {
+            imageModel.thumbnails = imageModel.GetThumbnails();
             JObject obj = JObject.Parse(imageModel.ThumbnailsToJSON());
             return obj;
         }
@@ -91,10 +80,56 @@ namespace ImageWebApp.Controllers
         }
 
         [HttpPost]
-        public void RemovePicture(string thumbPath)
+        public string RemovePicture(string thumbPath)
         {
-            imageModel.RemovePicture(thumbPath);
+            try
+            {
+                imageModel.RemovePicture(thumbPath);
+                return "success";
+            }
+            catch (Exception e)
+            {
+                return e.ToString();
+            }
+        }
+
+        [HttpPost]
+        public JObject GetHandlers()
+        {
+            try
+            {
+                JObject handler_list = new JObject();
+
+                List<string> list = WebClient.Instance.handlers;
+                JArray arr = new JArray();
+                foreach (string item in list)
+                {
+                    arr.Add(item);
+                }
+
+                handler_list["Handlers"] = arr;
+                return handler_list;
+            }
+            catch(Exception e)
+            {
+                JObject handler_list = new JObject();
+                handler_list["Handlers"] = new JArray(e.ToString());
+               
+                return handler_list;
+            }
+        }
+        [HttpPost]
+        public string RemoveHandler(string path)
+        {
+            try
+            {
+                WebClient.Instance.RemoveHandler(path);
+                return "Success";
+            }
+            catch(Exception)
+            {
+                return "Fail";
+            }
         }
     }
-
 }

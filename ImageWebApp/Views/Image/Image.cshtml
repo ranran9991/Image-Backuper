@@ -34,8 +34,11 @@
 <script>
     function btn_on_view(path) {
         // parsing for real path
+        /*
         var URLsplit = path.split("/");
         var realPath = path.replace(URLsplit[0] + "//" + URLsplit[2] + "//", '');
+        */
+        var realPath = path;
         var imagePath = "";
 
         $("#modal_body").children("img").remove();
@@ -43,8 +46,7 @@
             imagePath = data;
             $(".modal-body").children().remove("img");  
             $(".modal-body").append('<img style="max-width: 100%;" src="' + imagePath + '">');
-            imagePath = imagePath.replace(/\\/g, "\\\\");
-            $("#modal_remove_btn").attr('onclick', 'btn_on_delete("' + imagePath + '") ');
+            $("#modal_remove_btn").attr('onclick', 'btn_on_delete("' + realPath.replace(/\\/g, "\\\\") + '") ');
             $("#myModal").modal('show');
         });
     }
@@ -54,8 +56,11 @@
         if (ans == false) {
             return;
         }
-        $.post('@Url.Action("RemovePicture")', { thumbPath: path });
-        location.reload();
+        //path = path.replace(/\\/g, "\\\\");
+        $.post('@Url.Action("RemovePicture")', { thumbPath: path }, function (data) {
+            alert(data);
+            location.reload(true);
+        });
     }
     $.post('@Url.Action("GetThumbnails")', {}, function (data) {
         // number of rows
