@@ -73,7 +73,6 @@ namespace ImageService.Model
             int i = 1;
             while (true)
             {
-                tempPath = imPath;
                 if(!File.Exists(Path.Combine(thumbnailDir, Path.GetFileName(tempPath))))
                 {
                     thumb.Save(Path.Combine(thumbnailDir, Path.GetFileName(tempPath)));
@@ -81,6 +80,7 @@ namespace ImageService.Model
                 }
                 else
                 {
+                    tempPath = imPath;
                     addedStr = i.ToString();
                     tempPath = AddSuffix(tempPath, i.ToString());
                     i++;
