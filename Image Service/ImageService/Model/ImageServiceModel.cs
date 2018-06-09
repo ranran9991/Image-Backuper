@@ -56,7 +56,7 @@ namespace ImageService.Model
             Image image = Image.FromFile(imPath);
             Image thumb = image.GetThumbnailImage(m_thumbnailSize, m_thumbnailSize,
                                                  () => true, IntPtr.Zero);
-            string thumbnailDir = Path.Combine(m_OutputFolder, "thumbnails");
+            string thumbnailDir = Path.Combine(m_OutputFolder, "Thumbnails");
             if (!Directory.Exists(thumbnailDir))
             {
                 CreateDir(thumbnailDir, out result);
@@ -112,9 +112,7 @@ namespace ImageService.Model
                 }
             }
             string outPath = Path.Combine(monthPath, Path.GetFileName(imPath));
-            // move file to correct dir, loop used to handle
-            // cases where image with same name already exists in the directory
-            addedStr = "";
+            
             tempPath = AddSuffix(outPath, i.ToString());
             MoveFile(imPath, tempPath, out result);    
            

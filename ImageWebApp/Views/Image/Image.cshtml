@@ -56,9 +56,7 @@
         if (ans == false) {
             return;
         }
-        //path = path.replace(/\\/g, "\\\\");
         $.post('@Url.Action("RemovePicture")', { thumbPath: path }, function (data) {
-            alert(data);
             location.reload(true);
         });
     }

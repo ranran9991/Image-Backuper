@@ -21,8 +21,12 @@ namespace ImageWebApp.Client
 
         private WebClient()
         {
-            IPAddress IP = IPAddress.Parse("127.0.0.1");
-            int port = 8000;
+
+            string filePath = HttpContext.Current.Server.MapPath("/App_Data/server.txt");
+            StreamReader freader = new StreamReader(filePath);
+            int port = Int32.Parse(freader.ReadLine());
+            IPAddress IP = IPAddress.Parse(freader.ReadLine());
+ 
             IPEndPoint ep = new IPEndPoint(IP, port);
             client = new TcpClient();
             try { client.Connect(ep); }
@@ -35,9 +39,10 @@ namespace ImageWebApp.Client
             writer = new BinaryWriter(stream, Encoding.UTF8, true);
             config = new Config("", "", "", 0);
             logs = new Log();
+            handlers = new List<string>();
             GetCommands();
-            SendCommand(new CommandRecievedEventArgs((int)CommandEnum.LogHistoryCommand, null, null));
-            SendCommand(new CommandRecievedEventArgs((int)CommandEnum.ConfigCommand, null, ""));
+            SendCommand(new CommandRecievedEventArgs((int)CommandEnum.LogHistoryCommand, new string[] { }, null));
+            SendCommand(new CommandRecievedEventArgs((int)CommandEnum.ConfigCommand, new string[] { }, ""));
         }
 
         public static WebClient Instance
@@ -121,9 +126,9 @@ namespace ImageWebApp.Client
             }
         }
 
-        public void DeleteHandler(string dir)
+        public void RemoveHandler(string path)
         {
-            string[] args = { dir };
+            string[] args = { path };
             SendCommand(new CommandRecievedEventArgs((int)CommandEnum.HandlerRemoveCommand, args, null));
         }
 

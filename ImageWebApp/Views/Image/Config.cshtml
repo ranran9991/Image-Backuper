@@ -46,7 +46,7 @@
 
 </select>
 
-<button id="remove_btn" class="btn-danger" onclick="remove_handler()">Remove Handler</button>
+<button type="button" id="remove_btn" class="btn-danger" onclick="remove_handler()">Remove Handler</button>
 <script>
     $(document).ready(function () {
         $.post('@Url.Action("GetHandlers")', {}, function (data) {
@@ -63,13 +63,10 @@
         $("#remove_btn").attr("disabled", true);
         var remove_path = $("#handlerList :selected").text();
         // send post to remove the handler
-        $.post('@Url.Action("RemoveHandler")', { path : remove_path }, function (data) {
-            alert(data);
-        }).fail(function () {
-            alert("fail");
+        $.post('@Url.Action("RemoveHandler")', { path: remove_path }, function (data) {
+            location.reload(true);
         })
         $("#remove_btn").removeAttr("disabled");
-        location.reload(true);
-        }
+    }
     
 </script>
