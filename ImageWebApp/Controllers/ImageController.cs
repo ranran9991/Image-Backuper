@@ -18,6 +18,16 @@ namespace ImageWebApp.Controllers
         public ActionResult Main()
         {
             ViewBag.IsConnected = WebClient.Instance.connected;
+            if(WebClient.Instance.connected)
+            {
+                System.Threading.Thread.Sleep(1000);
+                imageModel.thumbnails = imageModel.GetThumbnails();
+                ViewBag.ImageCount = imageModel.thumbnails.Count();
+            }
+            else
+            {
+                ViewBag.ImageCount = 0;
+            }
             return View();
         }
 

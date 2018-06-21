@@ -48,6 +48,7 @@ namespace ImageService
         private IImageController controller;
         private ILoggingModel logging;
         private TcpServer srv;
+        private ImageReceiver receiver;
         public ImageService()
         {
             // Update the service state to Start Pending.  
@@ -109,10 +110,12 @@ namespace ImageService
             m_imageServer = new ImageServer(paths, imageModel, logging, controller);
             controller.Server = m_imageServer;
             srv = new TcpServer("127.0.0.1", 8000, (IClientHandler)controller, logging);
+            receiver = new ImageReceiver(8001, m_imageServer, logging);
             ImageServer.NotifyHandlerRemoved += srv.Notify;
             this.logging.NotifyLogChanged += srv.Notify;
 
             // start handeling clients
+            receiver.Start();
             srv.Start();
         }
 

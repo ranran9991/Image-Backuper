@@ -57,6 +57,7 @@
     <Compile Include="ImageService\Command\ICommand.cs" />
     <Compile Include="ImageService\Command\LogHistoryCommand.cs" />
     <Compile Include="ImageService\Command\NewFileCommand.cs" />
+    <Compile Include="ImageService\Command\FinishImageTransferCommand.cs" />
     <Compile Include="ImageService\Controller\Handlers\DirectoyHandler.cs" />
     <Compile Include="ImageService\Controller\Handlers\IDirectoryHandler.cs" />
     <Compile Include="ImageService\Controller\IImageController.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="ImageService\Model\ImageServiceModel.cs" />
     <Compile Include="ImageService\Program.cs" />
     <Compile Include="ImageService\Controller\IClientHandler.cs" />
+    <Compile Include="ImageService\Server\ImageReciever.cs" />
     <Compile Include="ImageService\Server\ImageServer.cs" />
     <Compile Include="ImageService\Server\TcpServer.cs" />
     <Compile Include="ProjectInstaller.cs">

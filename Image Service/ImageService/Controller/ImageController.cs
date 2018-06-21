@@ -27,6 +27,7 @@ namespace ImageService.Controller
             set
             {
                 server = value;
+                commands.Add((int)CommandEnum.FinishImageTransfer, new FinishImageTransferCommand(server));
                 commands.Add((int)CommandEnum.HandlerRemoveCommand, new HandlerRemoveCommand(server));
                 commands.Add((int)CommandEnum.ConfigCommand, new ConfigCommand(server));
             }
@@ -83,7 +84,8 @@ namespace ImageService.Controller
                     try
                     {
                         string commandLine = reader.ReadString();
-                        
+                        m_log.Log(commandLine, MessageTypeEnum.FAIL);
+
                         CommandRecievedEventArgs cmdArgs = CommandRecievedEventArgs.FromJSON(commandLine.ToString());
                         if (cmdArgs.CommandID == (int)CommandEnum.CloseClientCommand)
                         {
@@ -92,6 +94,34 @@ namespace ImageService.Controller
                             client.Close();
                         }
                         // execute the command
+                        if (cmdArgs.CommandID == (int)CommandEnum.StartImageTransfer)
+                        {
+                            m_log.Log("entered", MessageTypeEnum.INFO);
+                            string name = cmdArgs.Args[0];
+                            string image = "";
+                            clients.Remove(client);
+
+                            while (true)
+                            {
+                                string input = reader.ReadString();
+                                m_log.Log(input, MessageTypeEnum.FAIL);
+
+                                try
+                                {
+                                    CommandRecievedEventArgs finishTransfer = CommandRecievedEventArgs.FromJSON(input.ToString());
+                                    if (finishTransfer.CommandID == (int)CommandEnum.FinishImageTransfer)
+                                    {
+                                        ExecuteCommand(finishTransfer.CommandID, new string[] { image, name }, out success);
+                                        break;
+                                    }
+                                }
+                                catch (Exception)
+                                {
+                                    image += input;
+                                }
+                            }
+                            continue;
+                        }
                         string cmdOut = ExecuteCommand(cmdArgs.CommandID, cmdArgs.Args, out success);
 
                         // write output of command to client

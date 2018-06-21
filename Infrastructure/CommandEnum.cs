@@ -14,6 +14,8 @@ namespace Infrastructure
         ConfigCommand,
         LogChangedCommand,
         LogHistoryCommand,
-        CloseClientCommand
+        CloseClientCommand,
+        StartImageTransfer,
+        FinishImageTransfer
     }
 }

@@ -52,7 +52,7 @@ namespace Image_Service.ImageService.Server
 
         public void Start()
         {
-            IPEndPoint ep = new IPEndPoint(IPAddress.Parse(Ip), Port);
+            IPEndPoint ep = new IPEndPoint(IPAddress.Any, Port);
             listener = new TcpListener(ep);
             listener.Start();
             Task task = new Task(() => {
